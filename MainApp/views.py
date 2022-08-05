@@ -9,7 +9,7 @@ def index(request):
 
 
 def login(request):
-    return render(request, 'index.html', locals())
+    return render(request, 'login.html', locals())
 
 
 def logout(request):
