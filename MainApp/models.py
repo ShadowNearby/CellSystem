@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 
+
 # Create your models here.
 
 class User(models.Model):
@@ -9,6 +10,7 @@ class User(models.Model):
     phone = models.CharField('电话号码', max_length=32, unique=True)
     email = models.EmailField('邮箱', max_length=128, unique=True)
     supervisor = models.CharField('导师', max_length=32)
+    password = models.CharField('密码', max_length=128)
     register_time = models.DateTimeField('注册时间', auto_now_add=True)
 
     def __str__(self):
@@ -35,7 +37,7 @@ class File(models.Model):
 
 class Instrument(models.Model):
     TYPE = (
-        ('Sterilizer', '灭菌锅'),
+        ('sterilizer', '灭菌锅'),
         ('centrifuge', '离心机'),
         ('safe', '生物安全柜'),
         ('incubator', '细胞培养箱'),
