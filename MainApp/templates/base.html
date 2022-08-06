@@ -1,16 +1,8 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Bootstrap CSS 文件 -->
-    <link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <!-- jQuery文件 -->
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <!-- Bootstrap JavaScript 文件 -->
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <!-- Template Main CSS File -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
     <!-- Vendor CSS Files -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
@@ -21,8 +13,10 @@
     <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
-<body class="toggle-sidebar">
+<body class>
 <header class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
         <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -103,7 +97,7 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'MainApp:commitment' %}">
+            <a class="nav-link collapsed" href="{% url 'MainApp:commitment' %}">
                 <i class="bi bi-grid"></i>
                 <span>细胞房使用承诺书</span>
             </a>
@@ -169,7 +163,7 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link " href="{% url 'MainApp:comments' %}">
+            <a class="nav-link collapsed" href="{% url 'MainApp:comments' %}">
                 <i class="bi bi-envelope"></i>
                 <span>留言区</span>
             </a>

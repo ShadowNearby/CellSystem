@@ -1,5 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import *
+import os
+from django.http import HttpResponse, Http404, StreamingHttpResponse, FileResponse
 
 
 # Create your views here.
@@ -98,6 +100,18 @@ def centrifuge(request):
 
 
 def comments(request):
+    user_name = request.session.get('user_name')
+    comment_list = Comment.objects.all().reverse()
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment')
+        print('yes')
+        if not comment_text:
+            message = '评论内容不能为空！'
+        else:
+            new_comment = Comment()
+            new_comment.user_id = request.session.get('user_id')
+            new_comment.text = comment_text
+            new_comment.save()
     return render(request, 'comments.html', locals())
 
 
@@ -139,3 +153,33 @@ def manage_rule(request):
 
 def star_cell_cultured(request):
     return render(request, 'star_cell_cultured.html', locals())
+
+
+def download(request, file_id):
+    file = File.objects.get(id=file_id)
+    download_file = open(str(file.path), 'rb')
+    file_name = str(file.path).split('/')[1]
+    print(file_name)
+
+    def file_iterator(file_path, chunk_size=512):
+        """
+        文件生成器,防止文件过大，导致内存溢出
+        :param file_path: 文件绝对路径
+        :param chunk_size: 块大小
+        :return: 生成器
+        """
+        with open(file_path, mode='rb') as f:
+            while True:
+                c = f.read(chunk_size)
+                if c:
+                    yield c
+                else:
+                    break
+
+    try:
+        response = FileResponse(file_iterator(download_file))
+        response['Content-Type'] = 'application/octet-stream'
+        response['Content-Disposition'] = 'attachment;filename="{}"'.format("1.docx")
+    except:
+        return Http404
+    return response

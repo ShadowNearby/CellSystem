@@ -1,1 +1,394 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/quill/quill.snow.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body class>
+<header class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <span class="d-none d-md-block dropdown-toggle ps-2">账户</span>
+                    <img src="{% static 'img/sjtu.png' %}" alt="Profile" class="rounded-circle">
+
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>{{ name }}</h6>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    {#                    <li>#}
+                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
+                    {#                            <i class="bi bi-person"></i>#}
+                    {#                            <span>个人信息</span>#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <hr class="dropdown-divider">#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
+                    {#                            <i class="bi bi-gear"></i>#}
+                    {#                            <span>账户设置</span>#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                            <i class="bi bi-question-circle"></i>
+                            <span>需要帮助？</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:logout' %}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>登出</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav>
+</header>
+<aside class="sidebar" id="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>细胞房制度</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="system-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:manage_rule' %}">
+                        <i class="bi bi-circle"></i><span>大型仪器管理规则</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:note' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养注意事项流程</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'MainApp:commitment' %}">
+                <i class="bi bi-grid"></i>
+                <span>细胞房使用承诺书</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#tech-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-journal-text"></i><span>细胞技术档案文库</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tech-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:cultured_basic' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养基础</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:star_cell_cultured' %}">
+                        <i class="bi bi-circle"></i><span>星型胶质细胞的培养</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:cycle_protocol' %}">
+                        <i class="bi bi-circle"></i><span>细胞循环规范</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#instru-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>细胞房设备管理</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="instru-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:sterilizer' %}">
+                        <i class="bi bi-circle"></i><span>灭菌锅</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:centrifuge' %}">
+                        <i class="bi bi-circle"></i><span>离心机</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:safe' %}">
+                        <i class="bi bi-circle"></i><span>生物安全柜</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:incubator' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养箱</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:cylinder' %}">
+                        <i class="bi bi-circle"></i><span>二氧化碳钢瓶</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:tank' %}">
+                        <i class="bi bi-circle"></i><span>液氮罐</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'MainApp:comments' %}">
+                <i class="bi bi-envelope"></i>
+                <span>留言区</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>大型仪器管理规则</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'MainApp:index' %}">主页</a></li>
+                <li class="breadcrumb-item">细胞房制度</li>
+                <li class="breadcrumb-item active">细胞培养注意事项流程</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">细胞房使用流程及细胞培养注意事项流程</h5>
+                        <!-- Default Accordion -->
+                        {#                        <h6><a href="{% url 'MainApp:download' file_id=3 %}"><span>大型仪器管理规则.doc</span></a></h6>#}
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="false"
+                                            aria-controls="collapseOne">
+                                        细胞房使用流程
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                     data-bs-parent="#accordionExample" style="">
+                                    <div class="accordion-body">
+                                        需使用细胞房的人员请提前一周至负责人处登记。<br>
+                                        进入细胞房前，先换专用鞋<br>
+                                        进入缓冲间，穿衣、戴帽和口罩<br>
+                                        进入层流室，戴手套、消毒后，才可进行实验<br>
+                                        每天工作完成时，最后一个同学需负责关掉风机、空调及细胞房门<br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseTwo" aria-expanded="false"
+                                            aria-controls="collapseTwo">
+                                        细胞培养注意事项
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        每天使用细胞房之前，必须将缓冲间及层流室用紫外灯照射30 分钟。<br>
+                                        消毒结束后，通风15分钟后才可使用。<br>
+                                        细胞房的拖鞋仅能在细胞房内使用，不得穿出。<br>
+                                        进入层流室必须换衣服，戴帽、口罩及手套。<br>
+                                        不得将外来人员带入。<br>
+                                        保持细胞房内外地面、桌面的清洁、整齐，不得有杂物及废弃物。<br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseThree" aria-expanded="false"
+                                            aria-controls="collapseThree">
+                                        关于培养箱
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse"
+                                     aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        打开培养箱之前，必须将手套上喷上消毒剂。<br>
+                                        拿细胞时动作要迅速，并随手将培养箱门关上。禁止培养箱不关，避免反复开关。<br>
+                                        记住放置细胞的位置，不经他人允许，不得动别人的细胞。 <br>
+                                        每个人都有义务和责任经常观察CO2 钢瓶中气体的使用情况。 <br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseFour" aria-expanded="false"
+                                            aria-controls="collapseFour">
+                                        关于离心机
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse"
+                                     aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        离心细胞必须打开制冷开关。 <br>
+                                        离心时，离心管必须平衡。 <br>
+                                        离心结束时，依次关制冷开关、总开关、拔电源。 <br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseFive" aria-expanded="false"
+                                            aria-controls="collapseFive">
+                                        关于显微镜
+                                    </button>
+                                </h2>
+                                <div id="collapseFive" class="accordion-collapse collapse"
+                                     aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        保持载物台的清洁。 <br>
+                                        载物台上的所有附件用后，全部放回载物台。 <br>
+                                        用后，一定记住关电源。<br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseSix" aria-expanded="false"
+                                            aria-controls="collapseSix">
+                                        关于超净工作台
+                                    </button>
+                                </h2>
+                                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        掌握正确地开门方式。<br>
+                                        实验前，必须点燃酒精灯，并用酒精棉将台面消毒。<br>
+                                        实验过程中，手臂不能与台面接触。<br>
+                                        取用超净工作台的所有物品，必须注意避免双手与装有内容物的无菌区域接触。<br>
+                                        枪头盒放置的位置必须与枪架有一定的距离。<br>
+                                        所有经高压消毒、烘干过的物品在放入超净工作台后，需照射30分钟后才能使用。<br>
+                                        实验结束后，托盘内所有废弃物必须全部移走，固体物可倒入垃圾桶、液体必须倒入细胞房外的水槽，并冲洗。<br>
+                                        实验结束后，必须用酒精棉将台面消毒。<br>
+                                        紫外灯照射。<br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseSeven" aria-expanded="false"
+                                            aria-controls="collapseSeven">
+                                        关于水浴箱
+                                    </button>
+                                </h2>
+                                <div id="collapseSeven" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        用前，先检查箱内是否有水，并将小容器内的水换上新的超纯水。<br>
+                                        温度为39 度，预热2 小时。<br>
+                                        用完后，关开关及电源。<br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseEight" aria-expanded="false"
+                                            aria-controls="collapseEight">
+                                        关于细胞房的清洁
+                                    </button>
+                                </h2>
+                                <div id="collapseEight" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        每周必须做一次清洁。<br>
+                                        清洁工作必须在当天所有的实验结束后进行，不得在别人实验时进行。<br>
+                                        培养箱内托盘清洗，加超纯水。<br>
+                                        培养箱内用消毒水擦拭，之前将所有的细胞瓶盖旋紧，移动细胞瓶时一定要当心。<br>
+                                        整理桌面、用专用抹布将桌面擦干净。<br>
+                                        用专用拖把依次将层流室、缓冲间及外面过道各擦2次。<br>
+                                        倒垃圾。<br>
+                                        紫外灯照射30分钟。<br>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseNine" aria-expanded="false"
+                                            aria-controls="collapseNine">
+                                        关于培养液及胰酶
+                                    </button>
+                                </h2>
+                                <div id="collapseNine" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        配制人员必须严格按配方，配制时必须严格无菌操作，确保培养液及胰酶无菌。<br>
+                                        小牛血清必须54度灭活30分钟，期间要不时地晃动。<br>
+                                        培养液及胰酶要求每人各有一份，不得与他人混用。<br>
+                                        每次使用前，培养液及胰酶要提前预热。<br>
+                                        每次使用后，瓶口火焰消毒后，必须用封口膜封口。<br>
+                                        如有污染，可经过滤后使用。
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End Default Accordion Example -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+<!-- Vendor JS Files -->
+<script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/chart.js/chart.min.js' %}"></script>
+<script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+<script src="{% static 'vendor/quill/quill.min.js' %}"></script>
+<script src="{% static 'vendor/simple-datatables/simple-datatables.js' %}"></script>
+<script src="{% static 'vendor/tinymce/tinymce.min.js' %}"></script>
+<script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+
+<!-- Template Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

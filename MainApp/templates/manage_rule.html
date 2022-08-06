@@ -1,1 +1,359 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/quill/quill.snow.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body class>
+<header class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <span class="d-none d-md-block dropdown-toggle ps-2">账户</span>
+                    <img src="{% static 'img/sjtu.png' %}" alt="Profile" class="rounded-circle">
+
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>{{ name }}</h6>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    {#                    <li>#}
+                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
+                    {#                            <i class="bi bi-person"></i>#}
+                    {#                            <span>个人信息</span>#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <hr class="dropdown-divider">#}
+                    {#                    </li>#}
+                    {#                    <li>#}
+                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
+                    {#                            <i class="bi bi-gear"></i>#}
+                    {#                            <span>账户设置</span>#}
+                    {#                        </a>#}
+                    {#                    </li>#}
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
+                            <i class="bi bi-question-circle"></i>
+                            <span>需要帮助？</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:logout' %}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>登出</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav>
+</header>
+<aside class="sidebar" id="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>细胞房制度</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="system-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:manage_rule' %}">
+                        <i class="bi bi-circle"></i><span>大型仪器管理规则</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:note' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养注意事项流程</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'MainApp:commitment' %}">
+                <i class="bi bi-grid"></i>
+                <span>细胞房使用承诺书</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#tech-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-journal-text"></i><span>细胞技术档案文库</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tech-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:cultured_basic' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养基础</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:star_cell_cultured' %}">
+                        <i class="bi bi-circle"></i><span>星型胶质细胞的培养</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:cycle_protocol' %}">
+                        <i class="bi bi-circle"></i><span>细胞循环规范</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#instru-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>细胞房设备管理</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="instru-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:sterilizer' %}">
+                        <i class="bi bi-circle"></i><span>灭菌锅</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:centrifuge' %}">
+                        <i class="bi bi-circle"></i><span>离心机</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:safe' %}">
+                        <i class="bi bi-circle"></i><span>生物安全柜</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:incubator' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养箱</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:cylinder' %}">
+                        <i class="bi bi-circle"></i><span>二氧化碳钢瓶</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:tank' %}">
+                        <i class="bi bi-circle"></i><span>液氮罐</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'MainApp:comments' %}">
+                <i class="bi bi-envelope"></i>
+                <span>留言区</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>大型仪器管理规则</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'MainApp:index' %}">主页</a></li>
+                <li class="breadcrumb-item">细胞房制度</li>
+                <li class="breadcrumb-item active">大型仪器管理规则</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Med-X研究院生物技术公共平台仪器管理规则</h5>
+                        <!-- Default Accordion -->
+                        {#                        <h6><a href="{% url 'MainApp:download' file_id=3 %}"><span>大型仪器管理规则.doc</span></a></h6>#}
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseOne" aria-expanded="false"
+                                            aria-controls="collapseOne">
+                                        一． 仪器分类
+                                    </button>
+                                </h2>
+                                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                                     data-bs-parent="#accordionExample" style="">
+                                    <div class="accordion-body">
+                                        <p>1. 公共平台内设备仅对具有“公共平台用户卡”的用户开放。
+                                        <p>2.
+                                            全开放设备：此类仪器的全部操作对有独立操作资格的用户开放。此类仪器有：冰冻切片机、石蜡切片机、振动切片机、荧光正置显微镜、荧光倒置显微镜、-80℃冰箱、超速和高速离心机；
+                                        <p>3.
+                                            半开放设备：此类仪器的开机关机须由仪器管理员进行，管理员可根据设备特点，对有独立操作资格的用户开放部分操作。此类仪器有：激光扫描共焦显微镜、流式细胞仪、Realtime-PCR仪；
+                                        <p>4. 专人操作设备：此类仪器在整个使用过程中只能由管理员进行操作。包括：Micro/CT。
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseTwo" aria-expanded="false"
+                                            aria-controls="collapseTwo">
+                                        二． “公共平台用户卡”的管理
+                                    </button>
+                                </h2>
+                                <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p>1.
+                                            用户在使用平台服务前，需提交申请。申请者填写“公共平台使用申请表”，签字后20工作日内，平台将对其进行平台纪律、制度培训，以及实验技能培训，考核合格后发放“公共平台用户卡”。
+                                        <p>2. 对全开放设备和半开放设备有使用要求的用户，平台提供设备操作培训，用户通过考核后，在“公共平台用户卡”注明允许独立操作的设备名称。
+                                        <p>3. 用户由于违纪等原因被没收“公共平台用户卡”的，须重新经过平台纪律和技能培训，通过考核后发放“公共平台用户卡”。
+                                        <p>4. 严禁无“公共平台用户卡”的用户在本平台进行试验。
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseThree" aria-expanded="false"
+                                            aria-controls="collapseThree">
+                                        三． 预约登记
+                                    </button>
+                                </h2>
+                                <div id="collapseThree" class="accordion-collapse collapse"
+                                     aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p>1. 所有仪器都采取预约登记制度，预约仅对有“公共平台用户卡”的用户开放；
+                                        <p>2. 使用者登陆OA网上预约系统预约仪器使用时间，由仪器管理员统一审批；
+                                        <p>3. 原则上应提前一周进行预约；
+                                        <p>4. 工作时间为周一至周五8:30-11:30、12:00-17:00，双休日、节假日除外。其他时间平台只对持有“独立操作资格证书”的使用者开放；
+                                        <p>5.
+                                            使用者应按预约时间准时上机。如取消或变更预约，请及时联系管理员，否则按原预约时间或样本收费。如果预约者超过预约时间30分钟未使用仪器也未与管理员联系，管理员有权安排其他使用者使用，原预约者仍按原预约时间或样本收费。
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingThree">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseFour" aria-expanded="false"
+                                            aria-controls="collapseFour">
+                                        四． 仪器使用
+                                    </button>
+                                </h2>
+                                <div id="collapseFour" class="accordion-collapse collapse"
+                                     aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p>1. 工作时间为周一至周五8:30-11:30、12:00-17:00，双休日、节假日除外。
+                                        <p>2. 此外的时间只对有独立操作资格的用户开放，在这段时间内使用仪器，需要平台批准，以及导师签字同意并担保仪器使用安全后方可使用；
+                                        <p>3. 严格按照预约时间使用，以免仪器空开或影响他人实验；
+                                        <p>4. 使用仪器前应先检查一遍仪器状态和环境卫生，将“公共平台用户卡”交由管理员，开始实验。
+                                        <p>5. 在使用仪器前，如出现问题，请及时向管理员报告。
+                                        <p>6. 必须由预约者本人操作仪器，调换使用者请提前通知管理员并征得同意；
+                                        <p>7.
+                                            半开放及专人操作的大型仪器的开机和关机必须由管理员进行，使用者需严格按照仪器使用规定正确使用仪器，请勿调节仪器上不熟悉及不知功能的部分。在使用仪器过程中如遇到问题，及时通知管理员，严禁擅自处理或隐瞒；
+                                        <p>8. 在仪器使用过程中请勿擅自离开，如有特殊情况请主动向管理员说明，并征得同意；
+                                        <p>9. 仪器使用结束后，保持实验台清洁，如实填写使用记录本、收费单并签字，清理好自己的物品。最后经管理员确认设备正常后取回“公共平台用户卡”。
+                                        <p>10. 仪器的清理（如显微镜镜头的擦拭）由管理员进行。
+                                        <p>11.
+                                            为保证仪器系统安全，实验结果和数据需要通过光盘刻录带回，请勿使用U盘、移动硬盘等非光盘移动存储设备。原始数据保留3个月。平时分析或刻录数据，请联系管理员。
+                                        <p>12. 在仪器预约使用过程中，如有意见分歧，请服从工作人员的安排。
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingFive">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseFive" aria-expanded="false"
+                                            aria-controls="collapseFive">
+                                        <strong>五． 责任追究制度</strong>
+                                    </button>
+                                </h2>
+                                <div id="collapseFive" class="accordion-collapse collapse"
+                                     aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <strong><p>1. 平台管理仪器都是公用大型贵重设备，为了安全和高效地使用仪器，请自觉遵守本仪器使用规定；
+                                            <p>2. 有以下行为者，第一次邮件批评警告，第二次将收回“公共平台用户卡”，并双倍收费。<br>
+                                                a) 未取得独立操作资格者擅自使用仪器（双倍收费）；<br>
+                                                b) 未经预约使用仪器；<br>
+                                                c) 擅自替他人预约；<br>
+                                                d) 私带所外人员使用仪器者，按对外标准收费；<br>
+                                                e) 未登记或不如实登记，双倍收费；<br>
+                                                f) 未按仪器使用规则操作仪器；<br>
+                                                g) 未如实登记仪器使用情况；<br>
+                                                h) 擅自改变实验室温度、湿度、通风控制；<br>
+                                                i) 擅自更改仪器设置、拆卸或修理仪器。<br>
+                                            <p>3. 有以下行为者，属于严重违纪，平台将提交学院对违规者进行行政纪律处分。<br>
+                                                a) 无“公共平台用户卡”使用平台仪器；<br>
+                                                b) 故意损坏平台仪器设备；<br>
+                                                c) 不服从管理员安排，严重干扰公共平台正常秩序。<br>
+                                            <p>4. 凡使用者违反操作规程，或者由未经培训的人员操作而引起的仪器损坏，其维修费用全部由其所属研究组支付。
+                                        </strong>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingTwo">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapseSix" aria-expanded="false"
+                                            aria-controls="collapseSix">
+                                        六． 管理员职责
+                                    </button>
+                                </h2>
+                                <div id="collapseSix" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                                     data-bs-parent="#accordionExample">
+                                    <div class="accordion-body">
+                                        <p>1. 严格执行《Med-X研究院生物技术公共平台仪器管理规则》；
+                                        <p>2. 热爱本职工作，熟练掌握管理仪器的使用技术；
+                                        <p>3. 能够指导使用者正确使用仪器，清楚每个使用者的仪器使用情况，能及时有效排除常见问题；
+                                        <p>4. 对申请使用仪器者进行培训考核；
+                                        <p>5. 对仪器进行定期维护，保证仪器清洁和完好；
+                                        <p>6. 发生仪器故障时，核实责任情况，报告相关上级，并联系厂家进行维修；
+                                        <p>7. 及时做好仪器使用统计和收费工作。
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- End Default Accordion Example -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
+<!-- Vendor JS Files -->
+<script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/chart.js/chart.min.js' %}"></script>
+<script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+<script src="{% static 'vendor/quill/quill.min.js' %}"></script>
+<script src="{% static 'vendor/simple-datatables/simple-datatables.js' %}"></script>
+<script src="{% static 'vendor/tinymce/tinymce.min.js' %}"></script>
+<script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+
+<!-- Template Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

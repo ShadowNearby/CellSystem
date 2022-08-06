@@ -22,5 +22,6 @@ urlpatterns = [
     path('star_cell_cultured/', views.star_cell_cultured, name='star_cell_cultured'),
     path('sterilizer/', views.sterilizer, name='sterilizer'),
     path('tank/', views.tank, name='tank'),
+    path('download/<int:file_id>', views.download, name='download'),
 
 ]

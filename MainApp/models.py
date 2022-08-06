@@ -24,7 +24,7 @@ class User(models.Model):
 
 class File(models.Model):
     title = models.CharField('标题', max_length=256)
-    file = models.FileField('路径', upload_to=settings.FILE_ROOT, null=True)
+    path = models.FileField('路径', upload_to=settings.FILE_ROOT, null=True)
 
     def __str__(self):
         return self.title
