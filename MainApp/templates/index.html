@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>主页</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Vendor CSS Files -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -27,7 +28,7 @@
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
                    aria-expanded="false">
                     <span class="d-none d-md-block dropdown-toggle ps-2">账户</span>
-                    <img src="{% static 'img/sjtu.png' %}" alt="Profile" class="rounded-circle">
+                    <img src="{% static 'img/account.png' %}" alt="Profile" class="rounded-circle">
 
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -35,30 +36,9 @@
                         <h6>{{ name }}</h6>
                     </li>
                     <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    {#                    <li>#}
-                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
-                    {#                            <i class="bi bi-person"></i>#}
-                    {#                            <span>个人信息</span>#}
-                    {#                        </a>#}
-                    {#                    </li>#}
-                    {#                    <li>#}
-                    {#                        <hr class="dropdown-divider">#}
-                    {#                    </li>#}
-                    {#                    <li>#}
-                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
-                    {#                            <i class="bi bi-gear"></i>#}
-                    {#                            <span>账户设置</span>#}
-                    {#                        </a>#}
-                    {#                    </li>#}
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                            <i class="bi bi-question-circle"></i>
-                            <span>需要帮助？</span>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:setting' %}">
+                            <i class="bi bi-gear"></i>
+                            <span>账户设置</span>
                         </a>
                     </li>
                     <li>
@@ -170,6 +150,51 @@
         </li>
     </ul>
 </aside>
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>生物医学工程学院</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item active">生物技术公共平台细胞房</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Slides with controls -->
+                        <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item">
+                                    <img src="{% static 'img/slides-1.jpg' %}" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item active">
+                                    <img src="{% static 'img/slides-2.jpg' %}" class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="{% static 'img/slides-3.jpg' %}" class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div><!-- End Slides with controls -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main>
 <!-- Vendor JS Files -->
 <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

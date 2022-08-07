@@ -1,1 +1,278 @@
-{% extends 'base.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <title>星型胶质细胞的培养</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Vendor CSS Files -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/boxicons/css/boxicons.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/quill/quill.snow.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/quill/quill.bubble.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/remixicon/remixicon.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor/simple-datatables/style.css' %}" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+<header class="header fixed-top d-flex align-items-center">
+    <div class="d-flex align-items-center justify-content-between">
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div>
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
+                   aria-expanded="false">
+                    <span class="d-none d-md-block dropdown-toggle ps-2">账户</span>
+                    <img src="{% static 'img/account.png' %}" alt="Profile" class="rounded-circle">
+
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6>{{ name }}</h6>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:setting' %}">
+                            <i class="bi bi-gear"></i>
+                            <span>账户设置</span>
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:logout' %}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>登出</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav>
+</header>
+<aside class="sidebar" id="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>细胞房制度</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="system-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:manage_rule' %}">
+                        <i class="bi bi-circle"></i><span>大型仪器管理规则</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:note' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养注意事项流程</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'MainApp:commitment' %}">
+                <i class="bi bi-grid"></i>
+                <span>细胞房使用承诺书</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" data-bs-target="#tech-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-journal-text"></i><span>细胞技术档案文库</span><i class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tech-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:cultured_basic' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养基础</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:star_cell_cultured' %}" class="active">
+                        <i class="bi bi-circle"></i><span>星型胶质细胞的培养</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:cycle_protocol' %}">
+                        <i class="bi bi-circle"></i><span>细胞循环规范</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#instru-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-layout-text-window-reverse"></i><span>细胞房设备管理</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="instru-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="{% url 'MainApp:sterilizer' %}">
+                        <i class="bi bi-circle"></i><span>灭菌锅</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:centrifuge' %}">
+                        <i class="bi bi-circle"></i><span>离心机</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:safe' %}">
+                        <i class="bi bi-circle"></i><span>生物安全柜</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:incubator' %}">
+                        <i class="bi bi-circle"></i><span>细胞培养箱</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:cylinder' %}">
+                        <i class="bi bi-circle"></i><span>二氧化碳钢瓶</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'MainApp:tank' %}">
+                        <i class="bi bi-circle"></i><span>液氮罐</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'MainApp:comments' %}">
+                <i class="bi bi-envelope"></i>
+                <span>留言区</span>
+            </a>
+        </li>
+    </ul>
+</aside>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>星型胶质细胞的培养</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'MainApp:index' %}">主页</a></li>
+                <li class="breadcrumb-item">细胞技术档案文库</li>
+                <li class="breadcrumb-item active">星型胶质细胞的培养</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row align-items-top">
+            <div class="col-lg-6">
+                <!-- Default Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <p style="font-size:16px;font-family:等线,serif,serif;margin: 0;text-align:center;">
+                            <strong><span style="font-size:20px;font-family:宋体,serif,serif;">星形胶质细胞的培养</span></strong>
+                        </p>
+                        <p style="font-size:16px;font-family:等线,serif,serif;margin: 0;"><span
+                                style='font-family:"Arial,Bold",serif;'>1.&nbsp;</span><span
+                                style="font-family:宋体,serif;">液体配制</span><br><span
+                                style="font-family:宋体,serif;">星形胶质细胞完全培液</span>:
+                            <span style='font-family:"Calibri",sans-serif;'>DMEM&nbsp;</span><span
+                                    style="font-family:宋体,serif;">培养液</span>
+                            <span style='font-family:"Calibri",sans-serif;'>500&nbsp;</span><span
+                                    style="font-family:宋体,serif;">毫升中加入胎牛血清</span>
+                            <span style='font-family:"Calibri",sans-serif;'>50&nbsp;</span><span
+                                    style="font-family:宋体,serif;">毫升，</span><span
+                                    style='font-family:"Calibri",sans-serif;'>5&nbsp;</span><span
+                                    style="font-family:宋体,serif;">毫升青霉素</span><span
+                                    style='font-family:"Calibri",sans-serif;'>/</span><span
+                                    style="font-family:宋体,serif;">链霉素</span></p>
+                        <p style="font-size:16px;font-family:等线,serif;margin:0;"><span
+                                style="font-family:宋体,serif;">双抗。</span></p><br>
+                        <p style="font-size:16px;font-family:等线,serif;margin:0;"><span
+                                style='font-family:"Calibri,Bold",serif;'>2.&nbsp;</span><span
+                                style="font-family:宋体,serif;">星形胶质细胞的培养</span><br><span
+                                style="font-family:宋体,serif;">新生</span> <span
+                                style='font-family:"Calibri",sans-serif;'>1-2&nbsp;</span><span
+                                style="font-family:宋体,serif;">天</span> <span
+                                style='font-family:"Calibri",sans-serif;'>SD&nbsp;</span><span
+                                style="font-family:宋体,serif;">大鼠的乳鼠，经</span>
+                            <span style='font-family:"Calibri",sans-serif;'>75%</span><span
+                                    style="font-family:宋体,serif;">酒精消毒断头处死，取脑放入预冷的</span>
+                            <span style='font-family:"Calibri",sans-serif;'>HBSS&nbsp;</span><span
+                                    style="font-family:宋体,serif;">平衡盐溶液。在解</span>
+                        </p>
+                        <p style="font-size:16px;font-family:等线,serif,serif;margin:0;"><span
+                                style="font-family:宋体,serif;">剖镜下小心剥离颅骨以及脑膜，小心分离血管、海马、纹状体，然后将两侧大脑皮层取出，加入</span> <span
+                                style='font-family:"Calibri",sans-serif;'>37</span>&deg;C <span
+                                style="font-family:宋体,serif;">预热的</span> <span
+                                style='font-family:"Calibri",sans-serif;'>0.25%</span><span
+                                style="font-family:宋体,serif;">胰酶</span><span style='font-family:"Calibri",sans-serif;'>-0. 02% EDTA 37&nbsp;</span><span
+                                style="font-family:宋体,serif;">度消化</span> <span
+                                style='font-family:"Calibri",sans-serif;'>10-15&nbsp;</span><span
+                                style="font-family:宋体,serif;">分钟，待组织消化完全后加入</span> <span
+                                style='font-family:"Calibri",sans-serif;'>FBS&nbsp;</span><span
+                                style="font-family:宋体,serif;">终止消化，然后离</span>
+                            <span style="font-family:宋体,serif;">心</span> <span
+                                    style='font-family:"Calibri",sans-serif;'>5&nbsp;</span><span
+                                    style="font-family:宋体,serif;">分钟</span><span
+                                    style='font-family:"Calibri",sans-serif;'>(1000&nbsp;</span><span
+                                    style="font-family:宋体,serif;">转</span><span
+                                    style='font-family:"Calibri",sans-serif;'>/</span><span
+                                    style="font-family:宋体,serif;">分</span><span
+                                    style='font-family:"Calibri",sans-serif;'>)</span><span
+                                    style="font-family:宋体,serif;">，弃上清，用</span> <span
+                                    style='font-family:"Calibri",sans-serif;'>PBS&nbsp;</span><span
+                                    style="font-family:宋体,serif;">洗一遍后再用同样的条件离心，弃上清后用星形胶质细胞的</span> <span
+                                    style="font-family:宋体,serif;">完全培养液重悬，并用</span>
+                            <span style='font-family:"Calibri",sans-serif;'>70&nbsp;</span><span
+                                    style="font-family:宋体,serif;">微米的滤网过滤后将细胞接种于预先铺有多聚赖氨酸的培养皿中。</span>
+                        </p><br>
+                        <p style="font-size:16px;font-family:等线,serif;margin:0;"><span
+                                style='font-family:"Calibri,Bold",serif;'>3.&nbsp;</span><span
+                                style="font-family:宋体,serif;">星形胶质细胞的鉴定</span>
+                            (<span style='font-family:"Calibri,Bold",serif;'>GFAP&nbsp;</span><span
+                                    style="font-family:宋体,serif;">染色</span>)<br><span
+                                    style="font-family:宋体,serif;">用</span> <span
+                                    style='font-family:"Calibri",sans-serif;'>70%</span><span
+                                    style="font-family:宋体,serif;">酒精消毒的直径为</span>
+                            <span style='font-family:"Calibri",sans-serif;'>13&nbsp;</span><span
+                                    style="font-family:宋体,serif;">毫米的圆玻片放在</span>
+                            <span style='font-family:"Calibri",sans-serif;'>12&nbsp;</span><span
+                                    style="font-family:宋体,serif;">孔板中，将第一代星形胶质细胞以</span>
+                            <span style='font-family:"Calibri",sans-serif;'>105&nbsp;</span><span
+                                    style="font-family:宋体,serif;">细胞</span><span
+                                    style='font-family:"Calibri",sans-serif;'>/&nbsp;</span></p>
+                        <p style="font-size:16px;font-family:等线,serif;margin:0;"><span
+                                style="font-family:宋体,serif;">孔的细胞密度种在玻片上，待细胞长至</span> <span
+                                style='font-family:"Calibri",sans-serif;'>80%</span><span
+                                style="font-family:宋体,serif;">融合时</span><span
+                                style='font-family:"Calibri",sans-serif;'>,&nbsp;</span><span
+                                style="font-family:宋体,serif;">取出小玻片，放在一个新的</span>
+                            <span style='font-family:"Calibri",sans-serif;'>12&nbsp;</span><span
+                                    style="font-family:宋体,serif;">孔板中进行细胞</span>
+                            <span style="font-family:宋体,serif;">免疫组织化学染色鉴定。</span></p>
+                        <p style="font-size:16px;font-family:等线,serif;margin:0;">&nbsp;</p><br>
+                    </div>
+                </div><!-- End Default Card -->
+            </div>
+        </div>
+    </section>
+
+</main>
+<!-- Vendor JS Files -->
+<script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'vendor/chart.js/chart.min.js' %}"></script>
+<script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+<script src="{% static 'vendor/quill/quill.min.js' %}"></script>
+<script src="{% static 'vendor/simple-datatables/simple-datatables.js' %}"></script>
+<script src="{% static 'vendor/tinymce/tinymce.min.js' %}"></script>
+<script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+
+<!-- Template Main JS File -->
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

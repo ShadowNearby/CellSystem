@@ -83,19 +83,40 @@ def login(request):
 
 
 def logout(request):
-    request.session.clear()
-    return render(request, 'login.html')
+    request.session.flush()
+    return redirect('MainApp:index')
 
 
 def forget(request):
-    return render(request, 'index.html', locals())
+    if request.method == 'POST':
+        student_id = request.POST.get('student_id')
+        phone = request.POST.get('phone')
+        password = request.POST.get('password')
+        password_check = request.POST.get('password_check')
+        user = User.objects.get(student_id=student_id)
+        if not user:
+            message = '用户不存在！'
+            return render(request, 'forget.html', {'message': message})
+        user_phone = user.phone
+        if user_phone != phone:
+            message = '手机号码不正确！'
+            return render(request, 'forget.html', {'message': message, 'student_id': student_id})
+        if password != password_check:
+            message = '两次输入密码不同！'
+            return render(request, 'forget.html',
+                          {'message': message, 'student_id': student_id, 'password': password, 'phone': phone})
+        User.objects.filter(student_id=student_id).update(password=password)
+        return redirect('MainApp:index')
+    return render(request, 'forget.html')
 
 
 def cycle_protocol(request):
+    name = request.session.get('user_name')
     return render(request, 'cycle_protocol.html', locals())
 
 
 def centrifuge(request):
+    name = request.session.get('user_name')
     return render(request, 'centrifuge.html', locals())
 
 
@@ -116,42 +137,52 @@ def comments(request):
 
 
 def commitment(request):
+    name = request.session.get('user_name')
     return render(request, 'commitment.html', locals())
 
 
 def cultured_basic(request):
+    name = request.session.get('user_name')
     return render(request, 'cultured_basic.html', locals())
 
 
 def cylinder(request):
+    name = request.session.get('user_name')
     return render(request, 'cylinder.html', locals())
 
 
 def incubator(request):
+    name = request.session.get('user_name')
     return render(request, 'incubator.html', locals())
 
 
 def note(request):
+    name = request.session.get('user_name')
     return render(request, 'note.html', locals())
 
 
 def safe(request):
+    name = request.session.get('user_name')
     return render(request, 'safe.html', locals())
 
 
 def sterilizer(request):
+    name = request.session.get('user_name')
     return render(request, 'sterilizer.html', locals())
 
 
 def tank(request):
+    name = request.session.get('user_name')
     return render(request, 'tank.html', locals())
 
 
 def manage_rule(request):
+    name = request.session.get('user_name')
     return render(request, 'manage_rule.html', locals())
 
 
 def star_cell_cultured(request):
+    name = request.session.get('user_name')
     return render(request, 'star_cell_cultured.html', locals())
 
 
@@ -183,3 +214,43 @@ def download(request, file_id):
     except:
         return Http404
     return response
+
+
+def setting(request):
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        new_phone = request.POST.get('phone')
+        new_email = request.POST.get('email')
+        new_supervisor = request.POST.get('supervisor')
+        password = request.POST.get('password')
+        new_password = request.POST.get('new_password')
+        new_password_check = request.POST.get('new_password_check')
+        if new_phone != user.phone:
+            same_phone_user = User.objects.filter(phone=new_phone)
+            if same_phone_user:
+                message = '该电话已被注册！'
+                return render(request, 'setting.html', {'user': user, 'message': message})
+            User.objects.filter(id=user_id).update(phone=new_phone)
+            user.phone = new_phone
+        if new_email != user.email:
+            same_email_user = User.objects.filter(email=new_email)
+            if same_email_user:
+                message = '该邮箱已被注册！'
+                return render(request, 'setting.html', {'user': user, 'message': message})
+            User.objects.filter(id=user_id).update(email=new_email)
+            user.email = new_email
+        if new_supervisor != user.supervisor:
+            User.objects.filter(id=user_id).update(supervisor=new_supervisor)
+            user.supervisor = new_supervisor
+        if password:
+            if password != user.password:
+                pwd_message = '原密码输入错误！'
+                return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message})
+            if new_password != new_password_check:
+                pwd_message = '两次输入密码不同！'
+                return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message})
+            User.objects.filter(id=user_id).update(password=new_password)
+            user.password = new_password
+        return render(request, 'setting.html', {'user': user})
+    return render(request, 'setting.html', {'user': user})

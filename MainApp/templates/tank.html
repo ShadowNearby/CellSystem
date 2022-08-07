@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+    <title>液氮罐</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Vendor CSS Files -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -16,7 +17,7 @@
     <!-- Template Main CSS File -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
-<body class>
+<body>
 <header class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
         <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -27,7 +28,7 @@
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
                    aria-expanded="false">
                     <span class="d-none d-md-block dropdown-toggle ps-2">账户</span>
-                    <img src="{% static 'img/sjtu.png' %}" alt="Profile" class="rounded-circle">
+                    <img src="{% static 'img/account.png' %}" alt="Profile" class="rounded-circle">
 
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -37,28 +38,10 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    {#                    <li>#}
-                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
-                    {#                            <i class="bi bi-person"></i>#}
-                    {#                            <span>个人信息</span>#}
-                    {#                        </a>#}
-                    {#                    </li>#}
-                    {#                    <li>#}
-                    {#                        <hr class="dropdown-divider">#}
-                    {#                    </li>#}
-                    {#                    <li>#}
-                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
-                    {#                            <i class="bi bi-gear"></i>#}
-                    {#                            <span>账户设置</span>#}
-                    {#                        </a>#}
-                    {#                    </li>#}
                     <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                            <i class="bi bi-question-circle"></i>
-                            <span>需要帮助？</span>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:setting' %}">
+                            <i class="bi bi-gear"></i>
+                            <span>账户设置</span>
                         </a>
                     </li>
                     <li>
@@ -106,7 +89,7 @@
             <a class="nav-link collapsed" data-bs-target="#tech-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-journal-text"></i><span>细胞技术档案文库</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="tech-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="tech-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{% url 'MainApp:cultured_basic' %}">
                         <i class="bi bi-circle"></i><span>细胞培养基础</span>
@@ -125,11 +108,11 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#instru-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link" data-bs-target="#instru-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-layout-text-window-reverse"></i><span>细胞房设备管理</span><i
                     class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="instru-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="instru-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="{% url 'MainApp:sterilizer' %}">
                         <i class="bi bi-circle"></i><span>灭菌锅</span>
@@ -156,7 +139,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'MainApp:tank' %}">
+                    <a href="{% url 'MainApp:tank' %}" class="active">
                         <i class="bi bi-circle"></i><span>液氮罐</span>
                     </a>
                 </li>
@@ -170,6 +153,31 @@
         </li>
     </ul>
 </aside>
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>液氮罐</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'MainApp:index' %}">主页</a></li>
+                <li class="breadcrumb-item">细胞房设备管理</li>
+                <li class="breadcrumb-item active">液氮罐</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row align-items-top">
+            <div class="col-lg-6">
+                <!-- Default Card -->
+                <div class="card">
+                    <div class="card-body"></div>
+                </div><!-- End Default Card -->
+            </div>
+        </div>
+    </section>
+
+</main>
 <!-- Vendor JS Files -->
 <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>

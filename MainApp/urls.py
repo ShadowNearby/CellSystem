@@ -23,5 +23,6 @@ urlpatterns = [
     path('sterilizer/', views.sterilizer, name='sterilizer'),
     path('tank/', views.tank, name='tank'),
     path('download/<int:file_id>', views.download, name='download'),
+    path('setting/', views.setting, name='setting')
 
 ]

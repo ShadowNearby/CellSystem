@@ -1,8 +1,8 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-    <title>留言区</title>
+    <title>账户设置</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Vendor CSS Files -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -17,7 +17,7 @@
     <!-- Template Main CSS File -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
-<body class>
+<body>
 <header class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
         <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -33,10 +33,7 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>{{ user_name }}</h6>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
+                        <h6>{{ user.name }}</h6>
                     </li>
                     <li>
                         <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:setting' %}">
@@ -146,7 +143,7 @@
             </ul>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{% url 'MainApp:comments' %}">
+            <a class="nav-link collapsed" href="{% url 'MainApp:comments' %}">
                 <i class="bi bi-envelope"></i>
                 <span>留言区</span>
             </a>
@@ -154,65 +151,135 @@
     </ul>
 </aside>
 <main id="main" class="main">
-
     <div class="pagetitle">
-        <h1>留言区</h1>
         <nav>
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.html">主页</a></li>
-                <li class="breadcrumb-item active">留言区</li>
+                <li class="breadcrumb-item"><a href="{% url 'MainApp:index' %}">主页</a></li>
+                <li class="breadcrumb-item active">账户设置</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
-
-    <section class="section">
+    <section class="section profile">
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-xl-8">
                 <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">讨论区</h5>
-                        <div class="list-group">
-                            {% for comment in comment_list %}
-                                {% if comment.user.name == user_name %}
-                                    <div class="list-group-item list-group-item-action active"
-                                         aria-current="true">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">我</h5>
-                                            <small>{{ comment.date }}</small>
+                    <div class="card-body pt-3">
+                        <!-- Bordered Tabs -->
+                        <ul class="nav nav-tabs nav-tabs-bordered" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-edit"
+                                        aria-selected="true" role="tab">修改个人信息
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" data-bs-toggle="tab" data-bs-target="#profile-change-password"
+                                        aria-selected="false" tabindex="-1" role="tab">修改密码
+                                </button>
+                            </li>
+                        </ul>
+                        <div class="tab-content pt-2">
+                            <div class="tab-pane fade profile-edit pt-3 active show" id="profile-edit" role="tabpanel">
+                                <!-- Profile Edit Form -->
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="row mb-3">
+                                        <label for="student_id"
+                                               class="col-md-4 col-lg-3 col-form-label">学号</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="student_id" type="text" class="form-control" id="student_id"
+                                                   value="{{ user.student_id }}" disabled>
                                         </div>
-                                        <p class="mb-1">{{ comment.text }}</p>
                                     </div>
-                                {% else %}
-                                    <div class="list-group-item list-group-item-action">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h5 class="mb-1">{{ comment.user.name }}</h5>
-                                            <small class="text-muted">{{ comment.date }}</small>
+                                    <div class="row mb-3">
+                                        <label for="name" class="col-md-4 col-lg-3 col-form-label">姓名</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="name" type="text" class="form-control" id="name"
+                                                   value="{{ user.name }}" disabled>
                                         </div>
-                                        <p class="mb-1">{{ comment.text }}</p>
                                     </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">发表你的留言吧</h5>
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="row mb-5">
-                                <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="发一条留言" aria-label="comment"
-                                           aria-describedby="basic-addon1" name="comment">
-                                    <button type="submit" class="btn btn-primary">发表</button>
-                                </div>
+                                    <div class="row mb-3">
+                                        <label for="time" class="col-md-4 col-lg-3 col-form-label">注册时间</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="time" type="text" class="form-control" id="time"
+                                                   value="{{ user.register_time.date }}" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="supervisor"
+                                               class="col-md-4 col-lg-3 col-form-label">导师</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="supervisor" type="text" class="form-control" id="supervisor"
+                                                   value="{{ user.supervisor }}" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="phone" class="col-md-4 col-lg-3 col-form-label">电话</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="phone" type="text" class="form-control" id="phone"
+                                                   value="{{ user.phone }}" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="row mb-3">
+                                        <label for="email" class="col-md-4 col-lg-3 col-form-label">邮箱</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="email" type="email" class="form-control" id="email"
+                                                   value="{{ user.email }}" required>
+                                        </div>
+                                    </div>
+                                    {% if message %}
+                                        <div class="alert alert-warning">{{ message }}</div>
+                                    {% endif %}
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">保存</button>
+                                    </div>
+                                </form><!-- End Profile Edit Form -->
                             </div>
-                        </form>
+                            <div class="tab-pane fade pt-3" id="profile-change-password" role="tabpanel">
+                                <!-- Change Password Form -->
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="row mb-3">
+                                        <label for="currentPassword"
+                                               class="col-md-4 col-lg-3 col-form-label">当前密码</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="password" type="password" class="form-control"
+                                                   id="currentPassword" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="newPassword" class="col-md-4 col-lg-3 col-form-label">新密码</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="new_password" type="password" class="form-control"
+                                                   id="newPassword" required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <label for="renewPassword" class="col-md-4 col-lg-3 col-form-label">确认密码</label>
+                                        <div class="col-md-8 col-lg-9">
+                                            <input name="new_password_check" type="password" class="form-control"
+                                                   id="renewPassword" required>
+                                        </div>
+                                    </div>
+                                    {% if pwd_message %}
+                                        <div class="alert alert-warning">{{ pwd_message }}</div>
+                                    {% endif %}
+                                    <div class="text-center">
+                                        <button type="submit" class="btn btn-primary">修改</button>
+                                    </div>
+                                </form><!-- End Change Password Form -->
+
+                            </div>
+
+                        </div><!-- End Bordered Tabs -->
+
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
+
 </main>
 <!-- Vendor JS Files -->
 <script src="{% static 'vendor/apexcharts/apexcharts.min.js' %}"></script>

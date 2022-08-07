@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
+    <title>大型仪器管理规则</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Vendor CSS Files -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
@@ -27,7 +28,7 @@
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
                    aria-expanded="false">
                     <span class="d-none d-md-block dropdown-toggle ps-2">账户</span>
-                    <img src="{% static 'img/sjtu.png' %}" alt="Profile" class="rounded-circle">
+                    <img src="{% static 'img/account.png' %}" alt="Profile" class="rounded-circle">
 
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -37,28 +38,10 @@
                     <li>
                         <hr class="dropdown-divider">
                     </li>
-                    {#                    <li>#}
-                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
-                    {#                            <i class="bi bi-person"></i>#}
-                    {#                            <span>个人信息</span>#}
-                    {#                        </a>#}
-                    {#                    </li>#}
-                    {#                    <li>#}
-                    {#                        <hr class="dropdown-divider">#}
-                    {#                    </li>#}
-                    {#                    <li>#}
-                    {#                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">#}
-                    {#                            <i class="bi bi-gear"></i>#}
-                    {#                            <span>账户设置</span>#}
-                    {#                        </a>#}
-                    {#                    </li>#}
                     <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="pages-faq.html">
-                            <i class="bi bi-question-circle"></i>
-                            <span>需要帮助？</span>
+                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:setting' %}">
+                            <i class="bi bi-gear"></i>
+                            <span>账户设置</span>
                         </a>
                     </li>
                     <li>
@@ -80,12 +63,12 @@
 <aside class="sidebar" id="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
         <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#">
+            <a class="nav-link" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>细胞房制度</span><i class="bi bi-chevron-down ms-auto"></i>
             </a>
-            <ul id="system-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+            <ul id="system-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="{% url 'MainApp:manage_rule' %}">
+                    <a href="{% url 'MainApp:manage_rule' %}" class="active">
                         <i class="bi bi-circle"></i><span>大型仪器管理规则</span>
                     </a>
                 </li>
@@ -187,7 +170,9 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Med-X研究院生物技术公共平台仪器管理规则</h5>
+                        <p class="MsoNormal" style="margin-bottom:15.6pt;text-align:center;">
+                            <strong><span lang="EN-US" style="font-size:20px;">Med-X</span></strong><strong><span
+                                style="font-size:20px;font-family:黑体,serif;">研究院生物技术公共平台仪器管理规则</span></strong></p>
                         <!-- Default Accordion -->
                         {#                        <h6><a href="{% url 'MainApp:download' file_id=3 %}"><span>大型仪器管理规则.doc</span></a></h6>#}
                         <div class="accordion" id="accordionExample">
