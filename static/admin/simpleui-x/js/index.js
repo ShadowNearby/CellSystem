@@ -495,7 +495,7 @@
                     var tab = this.tabs[i];
                     if (tab.eid == data.eid) {
                         exists = tab;
-                        continue;
+
                     }
                 }
 

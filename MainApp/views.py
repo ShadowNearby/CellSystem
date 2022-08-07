@@ -1,19 +1,20 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.http import Http404, FileResponse
+from django.shortcuts import render, redirect
+
 from .models import *
-import os
-from django.http import HttpResponse, Http404, StreamingHttpResponse, FileResponse
 
 
 # Create your views here.
 
 def index(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
+    # if request.session.get('is_login', None) is not True:
+    #     return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'index.html', locals())
 
 
 def login(request):
+    user_id = request.session.get('user_id')
     if request.session.get('is_login', None):
         return redirect('MainApp:index')
     if request.method == 'POST':
@@ -26,7 +27,7 @@ def login(request):
                 user = User.objects.get(student_id=login_id)
             except:
                 message = '用户不存在！'
-                return render(request, 'login.html', {'message': message})
+                return render(request, 'login.html', {'message': message, 'user_id': user_id})
             if user.password == login_pwd:
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
@@ -34,7 +35,7 @@ def login(request):
                 return redirect('MainApp:index')
             else:
                 message = '学号或密码不正确！'
-                return render(request, 'login.html', {'message': message})
+                return render(request, 'login.html', {'message': message, 'user_id': user_id})
         else:
             re_id = request.POST.get('re_id')
             re_name = request.POST.get('re_name')
@@ -47,7 +48,8 @@ def login(request):
                 message = '两次输入的密码不同！'
                 return render(request, 'login.html',
                               {'re_name': re_name, 're_id': re_id, 're_email': re_email, 're_pwd': re_pwd,
-                               're_phone': re_phone, 're_supervisor': re_supervisor, 'message': message})
+                               're_phone': re_phone, 're_supervisor': re_supervisor, 'message': message,
+                               'user_id': user_id})
             else:
                 same_student_id_user = User.objects.filter(student_id=re_id)
                 if same_student_id_user:
@@ -55,21 +57,21 @@ def login(request):
                     return render(request, 'login.html',
                                   {'re_name': re_name, 're_confirm_pwd': re_confirm_pwd, 're_email': re_email,
                                    're_pwd': re_pwd, 're_phone': re_phone, 're_supervisor': re_supervisor,
-                                   'message': message})
+                                   'message': message, 'user_id': user_id})
                 same_email_user = User.objects.filter(email=re_email)
                 if same_email_user:
                     message = '该邮箱已经被注册了！'
                     return render(request, 'login.html',
                                   {'re_name': re_name, 're_confirm_pwd': re_confirm_pwd, 're_id': re_id,
                                    're_pwd': re_pwd, 're_phone': re_phone, 're_supervisor': re_supervisor,
-                                   'message': message})
+                                   'message': message, 'user_id': user_id})
                 same_phone_user = User.objects.filter(phone=re_phone)
                 if same_phone_user:
                     message = '该手机号已经被注册了！'
                     return render(request, 'login.html',
                                   {'re_name': re_name, 're_confirm_pwd': re_confirm_pwd, 're_id': re_id,
                                    're_pwd': re_pwd, 're_email': re_email, 're_supervisor': re_supervisor,
-                                   'message': message})
+                                   'message': message, 'user_id': user_id})
                 new_user = User()
                 new_user.name = re_name
                 new_user.email = re_email
@@ -111,16 +113,22 @@ def forget(request):
 
 
 def cycle_protocol(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'cycle_protocol.html', locals())
 
 
 def centrifuge(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'centrifuge.html', locals())
 
 
 def comments(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     user_name = request.session.get('user_name')
     comment_list = Comment.objects.all().reverse()
     if request.method == 'POST':
@@ -137,51 +145,71 @@ def comments(request):
 
 
 def commitment(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'commitment.html', locals())
 
 
 def cultured_basic(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'cultured_basic.html', locals())
 
 
 def cylinder(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'cylinder.html', locals())
 
 
 def incubator(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'incubator.html', locals())
 
 
 def note(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'note.html', locals())
 
 
 def safe(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'safe.html', locals())
 
 
 def sterilizer(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'sterilizer.html', locals())
 
 
 def tank(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'tank.html', locals())
 
 
 def manage_rule(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'manage_rule.html', locals())
 
 
 def star_cell_cultured(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'star_cell_cultured.html', locals())
 
@@ -217,6 +245,8 @@ def download(request, file_id):
 
 
 def setting(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     user_id = request.session.get('user_id')
     user = User.objects.get(id=user_id)
     if request.method == 'POST':
@@ -226,21 +256,22 @@ def setting(request):
         password = request.POST.get('password')
         new_password = request.POST.get('new_password')
         new_password_check = request.POST.get('new_password_check')
-        if new_phone != user.phone:
+        print(new_phone)
+        if new_phone and new_phone != user.phone:
             same_phone_user = User.objects.filter(phone=new_phone)
             if same_phone_user:
                 message = '该电话已被注册！'
                 return render(request, 'setting.html', {'user': user, 'message': message})
             User.objects.filter(id=user_id).update(phone=new_phone)
             user.phone = new_phone
-        if new_email != user.email:
+        if new_email and new_email != user.email:
             same_email_user = User.objects.filter(email=new_email)
             if same_email_user:
                 message = '该邮箱已被注册！'
                 return render(request, 'setting.html', {'user': user, 'message': message})
             User.objects.filter(id=user_id).update(email=new_email)
             user.email = new_email
-        if new_supervisor != user.supervisor:
+        if new_supervisor and new_supervisor != user.supervisor:
             User.objects.filter(id=user_id).update(supervisor=new_supervisor)
             user.supervisor = new_supervisor
         if password:
@@ -251,6 +282,5 @@ def setting(request):
                 pwd_message = '两次输入密码不同！'
                 return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message})
             User.objects.filter(id=user_id).update(password=new_password)
-            user.password = new_password
         return render(request, 'setting.html', {'user': user})
     return render(request, 'setting.html', {'user': user})

@@ -65,17 +65,13 @@
                                     {% csrf_token %}
                                     <div class="form-label-group">
                                         <input type="text" id="inputID" name="login_id" class="form-control"
-                                               placeholder="学号" required autofocus>
+                                               placeholder="学号" required autofocus value="{{ user_id }}">
                                         <label for="inputID">学号</label>
                                     </div>
                                     <div class="form-label-group">
                                         <input type="password" id="inputPassword" name="login_pwd" class="form-control"
                                                placeholder="密码" required>
                                         <label for="inputPassword">密码</label>
-                                    </div>
-                                    <div class="custom-control custom-checkbox mb-3">
-                                        <input type="checkbox" class="custom-control-input" id="customCheck1">
-                                        <label class="custom-control-label" for="customCheck1">记住密码</label>
                                     </div>
                                     <div class="el-message--error">{{ message }}</div>
                                     <button class="btn btn-lg btn-primary btn-color-hover btn-block text-uppercase"
