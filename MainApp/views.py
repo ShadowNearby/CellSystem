@@ -1,20 +1,22 @@
+import hashlib
 from django.http import Http404, FileResponse
 from django.shortcuts import render, redirect
-
 from .models import *
 
 
 # Create your views here.
 
 def index(request):
-    # if request.session.get('is_login', None) is not True:
-    #     return redirect('MainApp:login')
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'index.html', locals())
 
 
 def login(request):
     user_id = request.session.get('user_id')
+    if user_id is None:
+        user_id = ''
     if request.session.get('is_login', None):
         return redirect('MainApp:index')
     if request.method == 'POST':
@@ -22,13 +24,12 @@ def login(request):
         login_pwd = request.POST.get('login_pwd')
         print(login_id)
         if login_pwd and login_id:
-            print('yes')
             try:
                 user = User.objects.get(student_id=login_id)
             except:
                 message = '用户不存在！'
                 return render(request, 'login.html', {'message': message, 'user_id': user_id})
-            if user.password == login_pwd:
+            if user.password == hash_code(login_pwd):
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
@@ -78,7 +79,7 @@ def login(request):
                 new_user.phone = re_phone
                 new_user.student_id = re_id
                 new_user.supervisor = re_supervisor
-                new_user.password = re_pwd
+                new_user.password = hash_code(re_pwd)
                 new_user.save()
                 return redirect('MainApp:index')
     return render(request, 'login.html')
@@ -107,7 +108,7 @@ def forget(request):
             message = '两次输入密码不同！'
             return render(request, 'forget.html',
                           {'message': message, 'student_id': student_id, 'password': password, 'phone': phone})
-        User.objects.filter(student_id=student_id).update(password=password)
+        User.objects.filter(student_id=student_id).update(password=hash_code(password))
         return redirect('MainApp:index')
     return render(request, 'forget.html')
 
@@ -120,7 +121,7 @@ def cycle_protocol(request):
 
 
 def centrifuge(request):
-    if request.session.get('is_login', None) is not True:
+    if request.session.get('is_login', None) is False:
         return redirect('MainApp:login')
     name = request.session.get('user_name')
     return render(request, 'centrifuge.html', locals())
@@ -130,10 +131,9 @@ def comments(request):
     if request.session.get('is_login', None) is not True:
         return redirect('MainApp:login')
     user_name = request.session.get('user_name')
-    comment_list = Comment.objects.all().reverse()
+    comment_list = Comment.objects.order_by('-date')
     if request.method == 'POST':
         comment_text = request.POST.get('comment')
-        print('yes')
         if not comment_text:
             message = '评论内容不能为空！'
         else:
@@ -141,6 +141,7 @@ def comments(request):
             new_comment.user_id = request.session.get('user_id')
             new_comment.text = comment_text
             new_comment.save()
+            return redirect('MainApp:comments')
     return render(request, 'comments.html', locals())
 
 
@@ -215,33 +216,33 @@ def star_cell_cultured(request):
 
 
 def download(request, file_id):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     file = File.objects.get(id=file_id)
     download_file = open(str(file.path), 'rb')
-    file_name = str(file.path).split('/')[1]
-    print(file_name)
-
-    def file_iterator(file_path, chunk_size=512):
-        """
-        文件生成器,防止文件过大，导致内存溢出
-        :param file_path: 文件绝对路径
-        :param chunk_size: 块大小
-        :return: 生成器
-        """
-        with open(file_path, mode='rb') as f:
-            while True:
-                c = f.read(chunk_size)
-                if c:
-                    yield c
-                else:
-                    break
-
+    file_name = str(file.path).split('/')[-1]
+    file_type = str(file.path).split('.')[-1]
     try:
-        response = FileResponse(file_iterator(download_file))
-        response['Content-Type'] = 'application/octet-stream'
-        response['Content-Disposition'] = 'attachment;filename="{}"'.format("1.docx")
+        if file_type == 'doc':
+            response = FileResponse(download_file)
+            response['Content-Type'] = 'application/msword'
+            response['Content-Disposition'] = 'attachment;filename="{}"'.format(
+                file_name.encode('utf-8').decode('ISO-8859-1'))
+            return response
+        if file_type == 'docx':
+            response = FileResponse(download_file)
+            response['Content-Type'] = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+            response['Content-Disposition'] = 'attachment;filename="{}"'.format(
+                file_name.encode('utf-8').decode('ISO-8859-1'))
+            return response
+        if file_type == 'pdf':
+            response = FileResponse(download_file)
+            response['Content-Type'] = 'application/pdf'
+            response['Content-Disposition'] = 'attachment;filename="{}"'.format(
+                file_name.encode('utf-8').decode('ISO-8859-1'))
+            return response
     except:
         return Http404
-    return response
 
 
 def setting(request):
@@ -275,12 +276,19 @@ def setting(request):
             User.objects.filter(id=user_id).update(supervisor=new_supervisor)
             user.supervisor = new_supervisor
         if password:
-            if password != user.password:
+            if hash_code(password) != user.password:
                 pwd_message = '原密码输入错误！'
                 return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message})
             if new_password != new_password_check:
                 pwd_message = '两次输入密码不同！'
                 return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message})
-            User.objects.filter(id=user_id).update(password=new_password)
+            User.objects.filter(id=user_id).update(password=hash_code(new_password))
         return render(request, 'setting.html', {'user': user})
     return render(request, 'setting.html', {'user': user})
+
+
+def hash_code(s, salt='login'):
+    h = hashlib.sha256()
+    s += salt
+    h.update(s.encode())
+    return h.hexdigest()

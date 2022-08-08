@@ -22,7 +22,12 @@ class CommentAdmin(admin.ModelAdmin):
     list_display_links = ('date', 'user', 'text',)
 
 
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('register_time', 'name', 'student_id', 'phone', 'email', 'supervisor')
+    list_display_links = ('register_time', 'name', 'student_id', 'phone', 'email', 'supervisor')
+
+
 admin.site.register(File, FileAdmin)
 admin.site.register(Comment, CommentAdmin)
-admin.site.register(User)
+admin.site.register(User, UserAdmin)
 admin.site.register(Instrument, InstrumentAdmin)
