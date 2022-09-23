@@ -107,10 +107,24 @@
                     </div>
                 </div>
             </div>
+            <div class="col-lg-6">
+                <a href="{% url 'MainApp:index' %}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="bi bi-arrow-left"></i>生物公共技术平台细胞房
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
         </div>
     </section>
 </main>
 <script src="{% static 'vendor/chart.js/chart.min.js' %}"></script>
 <script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+{% include 'footer.html' %}
 </body>
 </html>

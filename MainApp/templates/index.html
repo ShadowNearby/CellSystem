@@ -54,17 +54,21 @@
                 </div>
             </div>
             <div class="col-lg-6">
-                <div class="card">
-                    <div class="card-body">
-                        <a href="{% url 'MainApp:ln_index' %}">
-                            <i class="bi bi-circle"></i><span>细胞培养箱</span>
-                        </a>
+                <a href="{% url 'MainApp:ln_index' %}">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-grid gap-2 mt-3">
+                                <button class="btn btn-primary" type="button">
+                                    液氮罐系统<i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                </a>
             </div>
         </div>
     </section>
-
 </main>
+{% include 'footer.html' %}
 </body>
 </html>

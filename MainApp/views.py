@@ -9,6 +9,13 @@ from .models import *
 # Create your views here.
 
 def index(request):
+    unit_groups = UnitGroup.objects.all()
+    groups = []
+    for group in unit_groups:
+        groups.append({
+            'group': group,
+            'units': Unit.objects.filter(group=group)
+        })
     if request.session.get('is_login', None) is not True:
         return redirect('MainApp:login')
     name = request.session.get('user_name')
@@ -114,21 +121,14 @@ def forget(request):
     return render(request, 'forget.html')
 
 
-def cycle_protocol(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'cycle_protocol.html', locals())
-
-
-def centrifuge(request):
-    if request.session.get('is_login', None) is False:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'centrifuge.html', locals())
-
-
 def comments(request):
+    unit_groups = UnitGroup.objects.all()
+    groups = []
+    for group in unit_groups:
+        groups.append({
+            'group': group,
+            'units': Unit.objects.filter(group=group)
+        })
     if request.session.get('is_login', None) is not True:
         return redirect('MainApp:login')
     user_name = request.session.get('user_name')
@@ -144,76 +144,6 @@ def comments(request):
             new_comment.save()
             return redirect('MainApp:comments')
     return render(request, 'comments.html', locals())
-
-
-def commitment(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'commitment.html', locals())
-
-
-def cultured_basic(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'cultured_basic.html', locals())
-
-
-def cylinder(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'cylinder.html', locals())
-
-
-def incubator(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'incubator.html', locals())
-
-
-def note(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'note.html', locals())
-
-
-def safe(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'safe.html', locals())
-
-
-def sterilizer(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'sterilizer.html', locals())
-
-
-def tank(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'tank.html', locals())
-
-
-def manage_rule(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'manage_rule.html', locals())
-
-
-def star_cell_cultured(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    name = request.session.get('user_name')
-    return render(request, 'star_cell_cultured.html', locals())
 
 
 def download(request, file_id):
@@ -251,6 +181,13 @@ def setting(request):
         return redirect('MainApp:login')
     user_id = request.session.get('user_id')
     user = User.objects.get(id=user_id)
+    unit_groups = UnitGroup.objects.all()
+    groups = []
+    for group in unit_groups:
+        groups.append({
+            'group': group,
+            'units': Unit.objects.filter(group=group)
+        })
     if request.method == 'POST':
         new_phone = request.POST.get('phone')
         new_email = request.POST.get('email')
@@ -262,14 +199,14 @@ def setting(request):
             same_phone_user = User.objects.filter(phone=new_phone)
             if same_phone_user:
                 message = '该电话已被注册！'
-                return render(request, 'setting.html', {'user': user, 'message': message})
+                return render(request, 'setting.html', {'user': user, 'message': message, 'groups': groups})
             User.objects.filter(id=user_id).update(phone=new_phone)
             user.phone = new_phone
         if new_email and new_email != user.email:
             same_email_user = User.objects.filter(email=new_email)
             if same_email_user:
                 message = '该邮箱已被注册！'
-                return render(request, 'setting.html', {'user': user, 'message': message})
+                return render(request, 'setting.html', {'user': user, 'message': message, 'groups': groups})
             User.objects.filter(id=user_id).update(email=new_email)
             user.email = new_email
         if new_supervisor and new_supervisor != user.supervisor:
@@ -278,13 +215,13 @@ def setting(request):
         if password:
             if hash_code(password) != user.password:
                 pwd_message = '原密码输入错误！'
-                return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message})
+                return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message, 'groups': groups})
             if new_password != new_password_check:
                 pwd_message = '两次输入密码不同！'
-                return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message})
+                return render(request, 'setting.html', {'user': user, 'pwd_message': pwd_message, 'groups': groups})
             User.objects.filter(id=user_id).update(password=hash_code(new_password))
-        return render(request, 'setting.html', {'user': user})
-    return render(request, 'setting.html', {'user': user})
+        return render(request, 'setting.html', {'user': user, 'groups': groups})
+    return render(request, 'setting.html', {'user': user, 'groups': groups})
 
 
 def hash_code(s, salt='login'):
@@ -402,18 +339,17 @@ def ln_modify(request):
     return render(request, 'ln_modify.html', {'user': user})
 
 
-def files(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    user_id = request.session.get('user_id')
-    user = User.objects.get(id=user_id)
-    return render(request, 'files.html', {'user': user})
-
-
 def unit(request, id):
     if request.session.get('is_login', None) is not True:
         return redirect('MainApp:login')
     user_id = request.session.get('user_id')
     user = User.objects.get(id=user_id)
     query_unit = Unit.objects.get(id=id)
-    return render(request, 'unit.html', {'user': user, 'unit': query_unit})
+    unit_groups = UnitGroup.objects.all()
+    groups = []
+    for group in unit_groups:
+        groups.append({
+            'group': group,
+            'units': Unit.objects.filter(group=group)
+        })
+    return render(request, 'unit.html', {'user': user, 'unit': query_unit, 'groups': groups})
