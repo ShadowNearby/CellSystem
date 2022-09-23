@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>液氮罐管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Vendor CSS Files -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+{% include 'ln_base.html' %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>取出/放入</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'MainApp:ln_index' %}">主页</a></li>
+                <li class="breadcrumb-item active">取出/放入</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row align-items-top">
+            <div class="col-lg-6">
+                <!-- Default Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row mb-3">
+                                <label for="UserName" class="col-md-4 col-lg-3 col-form-label">姓名</label>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="UserName" type="text" class="form-control" id="UserName"
+                                           value="{{ user.name }}" disabled>
+                                </div>
+                            </div>
+                            <fieldset class="row mb-3">
+                                <legend class="col-form-label col-sm-2 pt-0">取出/放回</legend>
+                                <div class="col-sm-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="action" id="Radios1"
+                                               value="take" checked="">
+                                        <label class="form-check-label" for="Radios1">
+                                            取出
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="action" id="Radios2"
+                                               value="put">
+                                        <label class="form-check-label" for="Radios2">
+                                            放回
+                                        </label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <div class="row mb-3">
+                                <label for="name" class="col-md-4 col-lg-3 col-form-label">名称</label>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="name" type="text" class="form-control" id="name">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label for="special" class="col-md-4 col-lg-3 col-form-label">特殊属性</label>
+                                <div class="col-md-8 col-lg-9">
+                                    <input name="special" type="text" class="form-control" id="special">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">罐号
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="basket" required>
+                                            <option value="1">A</option>
+                                            <option value="2">B</option>
+                                            <option value="3">C</option>
+                                            <option value="4">D</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">层数
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="floor" required>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">行号
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="row" required>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-2 col-form-label">列号
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="column" required>
+                                            <option value="1">a</option>
+                                            <option value="2">b</option>
+                                            <option value="3">c</option>
+                                            <option value="4">d</option>
+                                            <option value="5">e</option>
+                                            <option value="6">f</option>
+                                            <option value="7">g</option>
+                                            <option value="8">h</option>
+                                            <option value="9">i</option>
+                                        </select>
+                                    </div>
+                                </label>
+                            </div>
+                            <div class="row mb-3">
+                                <button type="submit" class="btn btn-primary">确定</button>
+                            </div>
+                        </form>
+                    </div>
+                </div><!-- End Default Card -->
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

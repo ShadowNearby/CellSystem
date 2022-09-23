@@ -9,6 +9,7 @@ urlpatterns = [
     path('login/', views.login, name='login'),
     path('forget/', views.forget, name='forget'),
     path('logout/', views.logout, name='logout'),
+    path('unit/<int:id>', views.unit, name='unit'),
     path('cycle_protocol/', views.cycle_protocol, name='cycle_protocol'),
     path('centrifuge/', views.centrifuge, name='centrifuge'),
     path('comments/', views.comments, name='comments'),
@@ -23,6 +24,12 @@ urlpatterns = [
     path('sterilizer/', views.sterilizer, name='sterilizer'),
     path('tank/', views.tank, name='tank'),
     path('download/<int:file_id>', views.download, name='download'),
-    path('setting/', views.setting, name='setting')
+    path('setting/', views.setting, name='setting'),
+    path('files/', views.files, name='files'),
+    path('ln/', views.ln_index, name='ln_index'),
+    path('ln/index', views.ln_index, name='ln_index'),
+    path('ln/query', views.ln_query, name='ln_query'),
+    path('ln/my', views.ln_my, name='ln_my'),
+    path('ln/modify', views.ln_modify, name='ln_modify'),
 
 ]

@@ -1,0 +1,102 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>液氮罐管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Vendor CSS Files -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+{% include 'ln_base.html' %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>我的</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'MainApp:ln_index' %}">主页</a></li>
+                <li class="breadcrumb-item active">我的</li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <script>
+
+    </script>
+    <section class="section">
+        <div class="row align-items-top">
+            <div class="col-lg-6">
+                <!-- Default Card -->
+                <div class="card">
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">名称</th>
+                                <th scope="col">罐</th>
+                                <th scope="col">层</th>
+                                <th scope="col">行</th>
+                                <th scope="col">列</th>
+                                <th scope="col">状态</th>
+                                <th scope="col">取/放时间</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in cell_span_days %}
+                                {% if item.cell.state == '空闲' %}
+                                    <tr class="table-success">
+                                        <th scope="row">{{ item.cell.name }}</th>
+                                        <td>{{ item.cell.basket }}</td>
+                                        <td>{{ item.cell.floor }}</td>
+                                        <td>{{ item.cell.row }}</td>
+                                        <td>{{ item.cell.column }}</td>
+                                        <td>{{ item.cell.state }}</td>
+                                        <td>{{ item.cell.date.date }}</td>
+                                    </tr>
+                                {% else %}
+                                    {% if item.span_days >= 365 %}
+                                        <tr class="table-danger">
+                                            <th scope="row">{{ item.cell.name }}</th>
+                                            <td>{{ item.cell.basket }}</td>
+                                            <td>{{ item.cell.floor }}</td>
+                                            <td>{{ item.cell.row }}</td>
+                                            <td>{{ item.cell.column }}</td>
+                                            <td>{{ item.cell.state }}</td>
+                                            <td>{{ item.cell.date.date }}</td>
+                                        </tr>
+                                    {% elif 182 <= item.span_days  and item.span_days < 365 %}
+                                        <tr class="table-warning">
+                                            <th scope="row">{{ item.cell.name }}</th>
+                                            <td>{{ item.cell.basket }}</td>
+                                            <td>{{ item.cell.floor }}</td>
+                                            <td>{{ item.cell.row }}</td>
+                                            <td>{{ item.cell.column }}</td>
+                                            <td>{{ item.cell.state }}</td>
+                                            <td>{{ item.cell.date.date }}</td>
+                                        </tr>
+                                    {% else %}
+                                        <tr class="table-primary">
+                                            <th scope="row">{{ item.cell.name }}</th>
+                                            <td>{{ item.cell.basket }}</td>
+                                            <td>{{ item.cell.floor }}</td>
+                                            <td>{{ item.cell.row }}</td>
+                                            <td>{{ item.cell.column }}</td>
+                                            <td>{{ item.cell.state }}</td>
+                                            <td>{{ item.cell.date.date }}</td>
+                                        </tr>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div><!-- End Default Card -->
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

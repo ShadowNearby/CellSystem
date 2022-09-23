@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <title>离心机</title>
+    <title>{{ unit.name }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Vendor CSS Files -->
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -10,31 +10,34 @@
     <!-- Template Main CSS File -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
-<body class="toggle-sidebar">
+<body>
 {% include 'base.html' %}
 <main id="main" class="main">
     <div class="pagetitle">
-        <h1>离心机</h1>
+        <h1>{{ unit.name }}</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'MainApp:index' %}">主页</a></li>
-                <li class="breadcrumb-item">细胞房设备管理</li>
-                <li class="breadcrumb-item active">离心机</li>
+                <li class="breadcrumb-item">{{ unit.group.name }}</li>
+                <li class="breadcrumb-item active">{{ unit.name }}</li>
             </ol>
         </nav>
+        <a href="{% url 'MainApp:download' file_id=unit.file.id %}" class="link-primary">下载文件</a>
     </div><!-- End Page Title -->
-
     <section class="section">
         <div class="row align-items-top">
             <div class="col-lg-6">
                 <!-- Default Card -->
                 <div class="card">
-                    <div class="card-body"></div>
+                    <div class="card-body">
+                        {% autoescape off %}
+                            {{ unit.content }}
+                        {% endautoescape %}
+                    </div>
                 </div><!-- End Default Card -->
             </div>
         </div>
     </section>
-
 </main>
 </body>
 </html>

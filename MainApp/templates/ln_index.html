@@ -1,0 +1,116 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>液氮罐管理系统</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Vendor CSS Files -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+    <!-- Template Main CSS File -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+{% include 'ln_base.html' %}
+<main id="main" class="main">
+    <div class="pagetitle">
+        <h1>液氮罐管理系统</h1>
+        <nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'MainApp:index' %}">主页</a></li>
+            </ol>
+        </nav>
+    </div><!-- End Page Title -->
+    <section class="section">
+        <div class="row align-items-top">
+            <div class="col-lg-6">
+                <!-- Default Card -->
+                <div class="card">
+                    <div class="card-body pb-0">
+                        <div id="Chart"
+                             style="min-height: 400px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;"
+                             class="echart" _echarts_instance_="ec_1663925504491">
+                            <div style="position: relative; width: 310px; height: 400px; padding: 0; margin: 0; border-width: 0; cursor: default;">
+                                <canvas data-zr-dom-id="zr_0" width="310" height="400"
+                                        style="position: absolute; left: 0; top: 0; width: 310px; height: 400px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0; margin: 0; border-width: 0;"></canvas>
+                            </div>
+                            <div class=""
+                                 style="position: absolute; display: block; border-style: solid; white-space: nowrap; z-index: 9999999; box-shadow: rgba(0, 0, 0, 0.2) 1px 2px 10px; transition: opacity 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0s, visibility 0.2s cubic-bezier(0.23, 1, 0.32, 1) 0s, transform 0.4s cubic-bezier(0.23, 1, 0.32, 1) 0s; background-color: rgb(255, 255, 255); border-width: 1px; border-radius: 4px; color: rgb(102, 102, 102); font: 14px / 21px &quot;Microsoft YaHei&quot;; padding: 10px; top: 0px; left: 0px; transform: translate3d(153px, 124px, 0px); border-color: rgb(238, 102, 102); pointer-events: none; visibility: hidden; opacity: 0;">
+                                <div style="margin: 0 0 0;line-height:1;">
+                                    <div style="font-size:14px;color:#666;font-weight:400;line-height:1;">Access From
+                                    </div>
+                                    <div style="margin: 10px 0 0;line-height:1;">
+                                        <div style="margin: 0 0 0;line-height:1;"><span
+                                                style="display:inline-block;margin-right:4px;border-radius:10px;width:10px;height:10px;background-color:#ee6666;"></span><span
+                                                style="font-size:14px;color:#666;font-weight:400;margin-left:2px">Union Ads</span><span
+                                                style="float:right;margin-left:20px;font-size:14px;color:#666;font-weight:900">484</span>
+                                            <div style="clear:both"></div>
+                                        </div>
+                                        <div style="clear:both"></div>
+                                    </div>
+                                    <div style="clear:both"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <script>
+                            document.addEventListener("DOMContentLoaded", () => {
+                                echarts.init(document.querySelector("#Chart")).setOption({
+                                    tooltip: {
+                                        trigger: 'item'
+                                    },
+                                    legend: {
+                                        top: '5%',
+                                        left: 'center'
+                                    },
+                                    series: [{
+                                        name: '细胞房',
+                                        type: 'pie',
+                                        radius: ['40%', '70%'],
+                                        avoidLabelOverlap: false,
+                                        label: {
+                                            show: false,
+                                            position: 'center'
+                                        },
+                                        emphasis: {
+                                            label: {
+                                                show: true,
+                                                fontSize: '18',
+                                                fontWeight: 'bold'
+                                            }
+                                        },
+                                        labelLine: {
+                                            show: false
+                                        },
+                                        data: [
+                                            {
+                                                value: {{ green }},
+                                                name: '空闲'
+                                            }, {
+                                                value: {{ blue }},
+                                                name: '占用(小于6个月)'
+                                            },
+                                            {
+                                                value: {{ yellow }},
+                                                name: '占用(6个月至1年)'
+                                            },
+                                            {
+                                                value: {{ red }},
+                                                name: '占用(大于1年)'
+                                            },
+                                        ]
+                                    }]
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script src="{% static 'vendor/chart.js/chart.min.js' %}"></script>
+<script src="{% static 'vendor/echarts/echarts.min.js' %}"></script>
+</body>
+</html>

@@ -7,150 +7,12 @@
     <!-- Vendor CSS Files -->
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
     <!-- Template Main CSS File -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
-<body class>
-<header class="header fixed-top d-flex align-items-center">
-    <div class="d-flex align-items-center justify-content-between">
-        <i class="bi bi-list toggle-sidebar-btn"></i>
-    </div>
-    <nav class="header-nav ms-auto">
-        <ul class="d-flex align-items-center">
-            <li class="nav-item dropdown pe-3">
-                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown"
-                   aria-expanded="false">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">账户</span>
-                    <img src="{% static 'img/account.png' %}" alt="Profile" class="rounded-circle">
-
-                </a>
-                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-                    <li class="dropdown-header">
-                        <h6>{{ name }}</h6>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:setting' %}">
-                            <i class="bi bi-gear"></i>
-                            <span>账户设置</span>
-                        </a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li>
-                        <a class="dropdown-item d-flex align-items-center" href="{% url 'MainApp:logout' %}">
-                            <i class="bi bi-box-arrow-right"></i>
-                            <span>登出</span>
-                        </a>
-                    </li>
-
-                </ul><!-- End Profile Dropdown Items -->
-            </li><!-- End Profile Nav -->
-
-        </ul>
-    </nav>
-</header>
-<aside class="sidebar" id="sidebar">
-    <ul class="sidebar-nav" id="sidebar-nav">
-        <li class="nav-item">
-            <a class="nav-link" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-menu-button-wide"></i><span>细胞房制度</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="system-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{% url 'MainApp:manage_rule' %}" class="active">
-                        <i class="bi bi-circle"></i><span>大型仪器管理规则</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'MainApp:note' %}">
-                        <i class="bi bi-circle"></i><span>细胞培养注意事项流程</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{% url 'MainApp:commitment' %}">
-                <i class="bi bi-grid"></i>
-                <span>细胞房使用承诺书</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#tech-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-journal-text"></i><span>细胞技术档案文库</span><i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="tech-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{% url 'MainApp:cultured_basic' %}">
-                        <i class="bi bi-circle"></i><span>细胞培养基础</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'MainApp:star_cell_cultured' %}">
-                        <i class="bi bi-circle"></i><span>星型胶质细胞的培养</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'MainApp:cycle_protocol' %}">
-                        <i class="bi bi-circle"></i><span>细胞循环规范</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#instru-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-layout-text-window-reverse"></i><span>细胞房设备管理</span><i
-                    class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="instru-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="{% url 'MainApp:sterilizer' %}">
-                        <i class="bi bi-circle"></i><span>灭菌锅</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'MainApp:centrifuge' %}">
-                        <i class="bi bi-circle"></i><span>离心机</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'MainApp:safe' %}">
-                        <i class="bi bi-circle"></i><span>生物安全柜</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'MainApp:incubator' %}">
-                        <i class="bi bi-circle"></i><span>细胞培养箱</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'MainApp:cylinder' %}">
-                        <i class="bi bi-circle"></i><span>二氧化碳钢瓶</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'MainApp:tank' %}">
-                        <i class="bi bi-circle"></i><span>液氮罐</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="{% url 'MainApp:comments' %}">
-                <i class="bi bi-envelope"></i>
-                <span>留言区</span>
-            </a>
-        </li>
-    </ul>
-</aside>
+<body>
+{% include 'base.html' %}
 <main id="main" class="main">
-
     <div class="pagetitle">
         <h1>大型仪器管理规则</h1>
         <nav>
@@ -169,7 +31,8 @@
                     <div class="card-body">
                         <p class="MsoNormal" style="margin-bottom:15.6pt;text-align:center;">
                             <strong><span lang="EN-US" style="font-size:20px;">Med-X</span></strong><strong><span
-                                style="font-size:20px;font-family:黑体,serif;">研究院生物技术公共平台仪器管理规则</span></strong></p>
+                                style="font-size:20px;font-family:黑体,serif;">研究院生物技术公共平台仪器管理规则</span></strong>
+                        </p>
                         <!-- Default Accordion -->
                         {#                        <h6><a href="{% url 'MainApp:download' file_id=3 %}"><span>大型仪器管理规则.doc</span></a></h6>#}
                         <div class="accordion" id="accordionExample">
@@ -325,9 +188,5 @@
     </section>
 
 </main>
-<!-- Vendor JS Files -->
-<script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.bundle.min.js"></script>
-<!-- Template Main JS File -->
-<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

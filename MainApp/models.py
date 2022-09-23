@@ -1,3 +1,5 @@
+import this
+
 from django.db import models
 
 
@@ -68,3 +70,70 @@ class Comment(models.Model):
         verbose_name = '评论'
         verbose_name_plural = verbose_name
         ordering = ['user', '-date']
+
+
+class TankCell(models.Model):
+    STATES = (
+        ('占用', 'taken'),
+        ('空闲', 'free')
+    )
+    name = models.CharField('名称', max_length=1024)
+    special_attr = models.CharField('特殊属性', max_length=1024)
+    user = models.ForeignKey(User, related_name='cell_user', on_delete=models.CASCADE)
+    state = models.CharField('状态', choices=STATES, max_length=32)
+    date = models.DateTimeField('取/放时间', auto_now=True)
+    basket = models.DecimalField('篮子编号', max_digits=1, decimal_places=0, unique=True)
+    floor = models.DecimalField('层数编号', max_digits=1, decimal_places=0, unique=True)
+    row = models.DecimalField('行编号', max_digits=1, decimal_places=0, unique=True)
+    column = models.DecimalField('列编号', max_digits=1, decimal_places=0, unique=True)
+
+    def __str__(self):
+        A = ['A', 'B', 'C', 'D']
+        a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+        return '{} {} {} {}'.format(A[int(self.basket)], self.floor, self.row, a[int(self.column)])
+
+    class Meta:
+        verbose_name = '液氮罐'
+        verbose_name_plural = verbose_name
+        ordering = ['user', '-date']
+
+
+class TankCellHistory(models.Model):
+    tankCell = models.ForeignKey(TankCell, related_name='tank_cell', on_delete=models.CASCADE)
+    date = models.DateTimeField('记录时间', auto_now=True)
+
+    def get_user_name(self):
+        return self.tankCell.user.name
+
+    def __str__(self):
+        return '{}'.format(self.tankCell.user_id)
+
+    class Meta:
+        verbose_name = '液氮罐操作历史记录'
+        verbose_name_plural = verbose_name
+        ordering = ['-date', 'tankCell']
+
+
+class UnitGroup(models.Model):
+    name = models.CharField('名称', max_length=128)
+    
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '单元组'
+        verbose_name_plural = verbose_name
+
+
+class Unit(models.Model):
+    name = models.CharField('名称', max_length=128)
+    file = models.ForeignKey(File, related_name='file', on_delete=models.PROTECT)
+    group = models.ForeignKey(UnitGroup, related_name='unit_group', on_delete=models.PROTECT)
+    content = models.TextField('内容')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = '单元'
+        verbose_name_plural = verbose_name

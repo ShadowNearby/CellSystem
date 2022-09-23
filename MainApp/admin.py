@@ -27,7 +27,31 @@ class UserAdmin(admin.ModelAdmin):
     list_display_links = ('register_time', 'name', 'student_id', 'phone', 'email', 'supervisor')
 
 
+class TankCellAdmin(admin.ModelAdmin):
+    list_display = ('date', 'user', 'basket', 'floor', 'row', 'column')
+    list_display_links = ('date', 'user', 'basket', 'floor', 'row', 'column')
+
+
+class TankCellHistoryAdmin(admin.ModelAdmin):
+    list_display = ('date', 'get_user_name')
+    list_display_links = ('date', 'get_user_name')
+
+
+class UnitAdmin(admin.ModelAdmin):
+    list_display = ('name', 'group', 'file')
+    list_display_links = ('name', 'group', 'file')
+
+
+class UnitGroupAdmin(admin.ModelAdmin):
+    list_display = ('name',)
+    list_display_links = ('name',)
+
+
 admin.site.register(File, FileAdmin)
 admin.site.register(Comment, CommentAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Instrument, InstrumentAdmin)
+admin.site.register(TankCell, TankCellAdmin)
+admin.site.register(TankCellHistory, TankCellHistoryAdmin)
+admin.site.register(Unit, UnitAdmin)
+admin.site.register(UnitGroup, UnitGroupAdmin)

@@ -1,18 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="zh">
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Vendor CSS Files -->
-    <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.gstatic.com" rel="preconnect">
-    <!-- Template Main CSS File -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-</head>
-<body>
 <header class="header fixed-top d-flex align-items-center">
     <div class="d-flex align-items-center justify-content-between">
         <i class="bi bi-list toggle-sidebar-btn"></i>
@@ -28,7 +16,11 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
-                        <h6>{{ name }}</h6>
+                        {% if name %}
+                            <h6>{{ name }}</h6>
+                        {% else %}
+                            <h6>{{ user.name }}</h6>
+                        {% endif %}
                     </li>
                     <li>
                         <hr class="dropdown-divider">
@@ -51,12 +43,17 @@
 
                 </ul><!-- End Profile Dropdown Items -->
             </li><!-- End Profile Nav -->
-
         </ul>
     </nav>
 </header>
 <aside class="sidebar" id="sidebar">
     <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="{% url 'MainApp:index' %}">
+                <i class="bi bi-gem"></i>
+                <span>主页</span>
+            </a>
+        </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#system-nav" data-bs-toggle="collapse" href="#">
                 <i class="bi bi-menu-button-wide"></i><span>细胞房制度</span><i class="bi bi-chevron-down ms-auto"></i>
@@ -82,7 +79,8 @@
         </li>
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#tech-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-journal-text"></i><span>细胞技术档案文库</span><i class="bi bi-chevron-down ms-auto"></i>
+                <i class="bi bi-journal-text"></i><span>细胞技术档案文库</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
             </a>
             <ul id="tech-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
@@ -152,5 +150,4 @@
 <script src="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/js/bootstrap.bundle.min.js"></script>
 <!-- Template Main JS File -->
 <script src="{% static 'js/main.js' %}"></script>
-</body>
 </html>

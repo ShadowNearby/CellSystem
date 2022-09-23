@@ -1,6 +1,8 @@
+import datetime
 import hashlib
 from django.http import Http404, FileResponse
 from django.shortcuts import render, redirect
+
 from .models import *
 
 
@@ -22,7 +24,6 @@ def login(request):
     if request.method == 'POST':
         login_id = request.POST.get('login_id')
         login_pwd = request.POST.get('login_pwd')
-        print(login_id)
         if login_pwd and login_id:
             try:
                 user = User.objects.get(student_id=login_id)
@@ -257,7 +258,6 @@ def setting(request):
         password = request.POST.get('password')
         new_password = request.POST.get('new_password')
         new_password_check = request.POST.get('new_password_check')
-        print(new_phone)
         if new_phone and new_phone != user.phone:
             same_phone_user = User.objects.filter(phone=new_phone)
             if same_phone_user:
@@ -292,3 +292,128 @@ def hash_code(s, salt='login'):
     s += salt
     h.update(s.encode())
     return h.hexdigest()
+
+
+def ln_index(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    sum_cell = 2916
+    query_result = TankCell.objects.filter(state='占用')
+    time_now = datetime.date.today()
+    red = yellow = blue = 0
+    for cell in query_result:
+        cell_time = cell.date.date()
+        span_days = (cell_time - time_now).days
+        if span_days >= 365:
+            red += 1
+        elif 183 <= span_days < 365:
+            yellow += 1
+        else:
+            blue += 1
+    green = sum_cell - red - yellow - blue
+    return render(request, 'ln_index.html', locals())
+
+
+def ln_query(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        basket = request.POST.get('basket')
+        floor = request.POST.get('floor')
+        row = request.POST.get('row')
+        column = request.POST.get('column')
+        query_result = TankCell.objects.filter(basket=basket, floor=floor, row=row, column=column).first()
+        if query_result:
+            cell_time = query_result.date.date()
+            time_now = datetime.date.today()
+            span_days = (cell_time - time_now).days
+            if span_days >= 365:
+                color = 'red'
+            elif 183 <= span_days < 365:
+                color = 'yellow'
+            else:
+                color = 'blue'
+            if query_result.state == '空闲':
+                color = 'green'
+            return render(request, 'ln_query.html', {'cell': query_result, 'user': user, 'color': color})
+        else:
+            query_result = TankCell(name='无', state='空闲', date=None)
+            return render(request, 'ln_query.html', {'cell': query_result, 'user': user, 'color': 'green'})
+    return render(request, 'ln_query.html', {'user': user})
+
+
+def ln_my(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    cells = TankCell.objects.filter(user=user)
+    time_now = datetime.date.today()
+    cell_span_days = []
+    A = ['A', 'B', 'C', 'D']
+    a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
+    for cell in cells:
+        cell.basket = A[int(cell.basket) - 1]
+        cell.column = a[int(cell.column) - 1]
+        cell_span_days.append({
+            'cell': cell,
+            'span_days': (cell.date.date() - time_now).days
+        })
+
+    return render(request, 'ln_my.html', locals())
+
+
+def ln_modify(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        action = request.POST.get('action')
+        special = request.POST.get('special')
+        basket = request.POST.get('basket')
+        floor = request.POST.get('floor')
+        row = request.POST.get('row')
+        column = request.POST.get('column')
+        query_result = TankCell.objects.filter(basket=basket, floor=floor, row=row, column=column).first()
+        if action == 'take':
+            action = '空闲'
+        else:
+            action = '占用'
+        if query_result is None:
+            new_Cell = TankCell(basket=basket, floor=floor, row=row, column=column, user=user, state=action,
+                                name=name,
+                                special_attr=special)
+            new_Cell.save()
+            TankCellHistory(tankCell=new_Cell).save()
+        else:
+            query_result.state = action
+            query_result.name = name
+            query_result.special_attr = special
+            query_result.save()
+            TankCellHistory(tankCell=query_result).save()
+
+        return render(request, 'ln_modify.html', {'user': user})
+    return render(request, 'ln_modify.html', {'user': user})
+
+
+def files(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    return render(request, 'files.html', {'user': user})
+
+
+def unit(request, id):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    query_unit = Unit.objects.get(id=id)
+    return render(request, 'unit.html', {'user': user, 'unit': query_unit})
