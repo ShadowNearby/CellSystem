@@ -122,6 +122,8 @@ def forget(request):
 
 
 def comments(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
     unit_groups = UnitGroup.objects.all()
     groups = []
     for group in unit_groups:
@@ -129,9 +131,9 @@ def comments(request):
             'group': group,
             'units': Unit.objects.filter(group=group)
         })
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
     user_name = request.session.get('user_name')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
     comment_list = Comment.objects.order_by('-date')
     if request.method == 'POST':
         comment_text = request.POST.get('comment')
@@ -339,12 +341,12 @@ def ln_modify(request):
     return render(request, 'ln_modify.html', {'user': user})
 
 
-def unit(request, id):
+def unit(request, unit_id: int):
     if request.session.get('is_login', None) is not True:
         return redirect('MainApp:login')
     user_id = request.session.get('user_id')
     user = User.objects.get(id=user_id)
-    query_unit = Unit.objects.get(id=id)
+    query_unit = Unit.objects.get(id=unit_id)
     unit_groups = UnitGroup.objects.all()
     groups = []
     for group in unit_groups:
@@ -353,3 +355,12 @@ def unit(request, id):
             'units': Unit.objects.filter(group=group)
         })
     return render(request, 'unit.html', {'user': user, 'unit': query_unit, 'groups': groups})
+
+
+def comment(request, comment_id: int):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    query_comment = Comment.objects.get(id=comment_id)
+    return render(request, 'comment.html', {'user': user})

@@ -3,8 +3,8 @@ from .models import *
 
 # Register your models here.
 
-admin.site.site_header = '细胞房制度及档案文库系统后台'
-admin.site.site_title = '细胞房制度及档案文库系统'
+admin.site.site_header = '细胞房系统后台'
+admin.site.site_title = '细胞房系统'
 
 
 class FileAdmin(admin.ModelAdmin):
@@ -33,8 +33,8 @@ class TankCellAdmin(admin.ModelAdmin):
 
 
 class TankCellHistoryAdmin(admin.ModelAdmin):
-    list_display = ('date', 'get_user_name')
-    list_display_links = ('date', 'get_user_name')
+    list_display = ('date', 'user', 'cell')
+    list_display_links = ('date', 'user', 'cell')
 
 
 class UnitAdmin(admin.ModelAdmin):

@@ -1,5 +1,3 @@
-import this
-
 from django.db import models
 
 
@@ -60,16 +58,22 @@ class Instrument(models.Model):
 
 class Comment(models.Model):
     user = models.ForeignKey(User, related_name='comment_user', on_delete=models.CASCADE)
-    date = models.DateTimeField('评论日期', auto_now_add=True)
-    text = models.CharField('评论内容', max_length=4096)
+    date = models.DateTimeField('留言日期', auto_now_add=True)
+    text = models.CharField('留言内容', max_length=4096)
 
     def __str__(self):
-        return '{}'.format(self.user_id)
+        return '{}'.format(self.user)
 
     class Meta:
-        verbose_name = '评论'
+        verbose_name = '留言'
         verbose_name_plural = verbose_name
         ordering = ['user', '-date']
+
+
+class CommentReply(models.Model):
+    comment = models.ForeignKey(Comment, related_name='留言回复', on_delete=models.CASCADE)
+    date = models.DateTimeField('回复日期', auto_now_add=True)
+    text = models.TextField
 
 
 class TankCell(models.Model):
@@ -82,15 +86,15 @@ class TankCell(models.Model):
     user = models.ForeignKey(User, related_name='cell_user', on_delete=models.CASCADE)
     state = models.CharField('状态', choices=STATES, max_length=32)
     date = models.DateTimeField('取/放时间', auto_now=True)
-    basket = models.DecimalField('篮子编号', max_digits=1, decimal_places=0, unique=True)
-    floor = models.DecimalField('层数编号', max_digits=1, decimal_places=0, unique=True)
-    row = models.DecimalField('行编号', max_digits=1, decimal_places=0, unique=True)
-    column = models.DecimalField('列编号', max_digits=1, decimal_places=0, unique=True)
+    basket = models.DecimalField('篮子编号', max_digits=1, decimal_places=0)
+    floor = models.DecimalField('层数编号', max_digits=1, decimal_places=0)
+    row = models.DecimalField('行编号', max_digits=1, decimal_places=0)
+    column = models.DecimalField('列编号', max_digits=1, decimal_places=0)
 
     def __str__(self):
         A = ['A', 'B', 'C', 'D']
         a = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
-        return '{} {} {} {}'.format(A[int(self.basket)], self.floor, self.row, a[int(self.column)])
+        return '{}罐{}层{}行{}列'.format(A[int(self.basket)], self.floor, self.row, a[int(self.column)])
 
     class Meta:
         verbose_name = '液氮罐'
@@ -102,8 +106,11 @@ class TankCellHistory(models.Model):
     tankCell = models.ForeignKey(TankCell, related_name='tank_cell', on_delete=models.CASCADE)
     date = models.DateTimeField('记录时间', auto_now=True)
 
-    def get_user_name(self):
-        return self.tankCell.user.name
+    def user(self):
+        return self.tankCell.user
+
+    def cell(self):
+        return self.tankCell
 
     def __str__(self):
         return '{}'.format(self.tankCell.user_id)
@@ -116,7 +123,7 @@ class TankCellHistory(models.Model):
 
 class UnitGroup(models.Model):
     name = models.CharField('名称', max_length=128)
-    
+
     def __str__(self):
         return self.name
 

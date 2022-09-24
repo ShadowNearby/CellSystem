@@ -1,8 +1,9 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-    <title>留言区</title>
+    <meta charset="UTF-8">
+    <title>留言</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Vendor CSS Files -->
     <link href="https://cdn.bootcdn.net/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css" rel="stylesheet">
@@ -10,16 +11,15 @@
     <!-- Template Main CSS File -->
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
-<body class>
+<body>
 {% include 'base.html' %}
 <main id="main" class="main">
-
     <div class="pagetitle">
-        <h1>留言区</h1>
+        <h1>留言</h1>
         <nav>
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{% url 'MainApp:index' %}">主页</a></li>
-                <li class="breadcrumb-item active">留言区</li>
+                <li class="breadcrumb-item active">留言</li>
             </ol>
         </nav>
     </div><!-- End Page Title -->
