@@ -60,7 +60,7 @@
             <ul id="model{{ item.group.id }}" class="nav-content collapse " data-bs-parent="#model{{ item.group.id }}">
                 {% for unit in item.units %}
                     <li>
-                        <a href="{% url 'MainApp:unit' id=unit.id %}">
+                        <a href="{% url 'MainApp:unit' unit_id=unit.id %}">
                             <i class="bi bi-circle"></i><span>{{ unit.name }}</span>
                         </a>
                     </li>

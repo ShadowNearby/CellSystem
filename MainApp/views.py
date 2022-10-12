@@ -121,33 +121,6 @@ def forget(request):
     return render(request, 'forget.html')
 
 
-def comments(request):
-    if request.session.get('is_login', None) is not True:
-        return redirect('MainApp:login')
-    unit_groups = UnitGroup.objects.all()
-    groups = []
-    for group in unit_groups:
-        groups.append({
-            'group': group,
-            'units': Unit.objects.filter(group=group)
-        })
-    user_name = request.session.get('user_name')
-    user_id = request.session.get('user_id')
-    user = User.objects.get(id=user_id)
-    comment_list = Comment.objects.order_by('-date')
-    if request.method == 'POST':
-        comment_text = request.POST.get('comment')
-        if not comment_text:
-            message = '评论内容不能为空！'
-        else:
-            new_comment = Comment()
-            new_comment.user_id = request.session.get('user_id')
-            new_comment.text = comment_text
-            new_comment.save()
-            return redirect('MainApp:comments')
-    return render(request, 'comments.html', locals())
-
-
 def download(request, file_id):
     if request.session.get('is_login', None) is not True:
         return redirect('MainApp:login')
@@ -363,4 +336,52 @@ def comment(request, comment_id: int):
     user_id = request.session.get('user_id')
     user = User.objects.get(id=user_id)
     query_comment = Comment.objects.get(id=comment_id)
-    return render(request, 'comment.html', {'user': user})
+    unit_groups = UnitGroup.objects.all()
+    groups = []
+    for group in unit_groups:
+        groups.append({
+            'group': group,
+            'units': Unit.objects.filter(group=group)
+        })
+    replies = CommentReply.objects.filter(comment=query_comment)
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment')
+        if not comment_text:
+            message = '回复内容不能为空！'
+        else:
+            new_reply = CommentReply()
+            new_reply.user = user
+            new_reply.text = comment_text
+            new_reply.comment = query_comment
+            new_reply.save()
+            return render(request, 'comment.html',
+                          {'user': user, 'comment': query_comment, 'groups': groups, 'replies': replies})
+    return render(request, 'comment.html',
+                  {'user': user, 'comment': query_comment, 'groups': groups, 'replies': replies})
+
+
+def comments(request):
+    if request.session.get('is_login', None) is not True:
+        return redirect('MainApp:login')
+    unit_groups = UnitGroup.objects.all()
+    groups = []
+    for group in unit_groups:
+        groups.append({
+            'group': group,
+            'units': Unit.objects.filter(group=group)
+        })
+    user_name = request.session.get('user_name')
+    user_id = request.session.get('user_id')
+    user = User.objects.get(id=user_id)
+    comment_list = Comment.objects.order_by('-date')
+    if request.method == 'POST':
+        comment_text = request.POST.get('comment')
+        if not comment_text:
+            message = '评论内容不能为空！'
+        else:
+            new_comment = Comment()
+            new_comment.user_id = request.session.get('user_id')
+            new_comment.text = comment_text
+            new_comment.save()
+            return redirect('MainApp:comments')
+    return render(request, 'comments.html', locals())

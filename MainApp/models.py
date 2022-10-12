@@ -59,10 +59,10 @@ class Instrument(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(User, related_name='comment_user', on_delete=models.CASCADE)
     date = models.DateTimeField('留言日期', auto_now_add=True)
-    text = models.CharField('留言内容', max_length=4096)
+    text = models.TextField('留言内容')
 
     def __str__(self):
-        return '{}'.format(self.user)
+        return '{}'.format(self.text[0:10])
 
     class Meta:
         verbose_name = '留言'
@@ -72,8 +72,17 @@ class Comment(models.Model):
 
 class CommentReply(models.Model):
     comment = models.ForeignKey(Comment, related_name='留言回复', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='回复者', on_delete=models.CASCADE)
     date = models.DateTimeField('回复日期', auto_now_add=True)
-    text = models.TextField
+    text = models.TextField('回复内容')
+
+    def __str__(self):
+        return '{}'.format(self.text[0:10])
+
+    class Meta:
+        verbose_name = '留言回复'
+        verbose_name_plural = verbose_name
+        ordering = ['user', '-date']
 
 
 class TankCell(models.Model):

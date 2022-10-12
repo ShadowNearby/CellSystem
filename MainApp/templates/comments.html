@@ -28,39 +28,12 @@
             <div class="col-lg-6">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">讨论区</h5>
-                        <div class="list-group">
-                            {% for comment in comment_list %}
-                                {% if comment.user.name == user_name %}
-                                    <div class="list-group-item list-group-item-info"
-                                         aria-current="true">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1">我</h6>
-                                            <small>{{ comment.date }}</small>
-                                        </div>
-                                        <p class="mb-1">{{ comment.text }}</p>
-                                    </div>
-                                {% else %}
-                                    <div class="list-group-item list-group-item-light">
-                                        <div class="d-flex w-100 justify-content-between">
-                                            <h6 class="mb-1">{{ comment.user.name }}</h6>
-                                            <small class="text-muted">{{ comment.date }}</small>
-                                        </div>
-                                        <p class="mb-1">{{ comment.text }}</p>
-                                    </div>
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">发表你的留言吧</h5>
+                        <div class="card-title">写一条留言吧</div>
                         <form method="post">
                             {% csrf_token %}
                             <div class="row mb-5">
                                 <div class="input-group mb-3">
-                                    <input type="text" class="form-control" placeholder="发一条留言"
+                                    <input type="text" class="form-control" placeholder="点这里写留言"
                                            aria-label="comment"
                                            aria-describedby="basic-addon1" name="comment">
                                     <button type="submit" class="btn btn-primary">发表</button>
@@ -68,6 +41,40 @@
                             </div>
                         </form>
                     </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">讨论区</h5>
+                        <div class="list-group">
+                            {% for comment in comment_list %}
+                                {% if comment.user.name == user_name %}
+                                    <a href="{% url 'MainApp:comment' comment_id=comment.id %}">
+                                        <div class="list-group-item list-group-item-success"
+                                             aria-current="true">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">{{ comment.user.name }}</h6>
+                                                <small>{{ comment.date }}</small>
+                                            </div>
+                                            <p class="mb-1">{{ comment.text }}</p>
+                                        </div>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'MainApp:comment' comment_id=comment.id %}">
+                                        <div class="list-group-item list-group-item-light">
+                                            <div class="d-flex w-100 justify-content-between">
+                                                <h6 class="mb-1">{{ comment.user.name }}</h6>
+                                                <small class="text-muted">{{ comment.date }}</small>
+                                            </div>
+                                            <p class="mb-1">{{ comment.text }}</p>
+                                        </div>
+                                    </a>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+
                 </div>
             </div>
         </div>
